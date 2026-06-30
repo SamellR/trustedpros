@@ -3,425 +3,142 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel – TrustedPros</title>
+    <title>Admin Dashboard – TrustedPros</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-            background: #f1f5f9;
-            color: #0f172a;
-            padding: 24px;
-        }
+        body { font-family: 'Segoe UI', Roboto, system-ui, sans-serif; background: #f1f5f9; color: #0f172a; padding: 24px; }
         .container { max-width: 1200px; margin: 0 auto; }
         h1 { font-size: 2rem; margin-bottom: 8px; }
         .sub { color: #475569; margin-bottom: 24px; }
-        .login-box {
-            max-width: 400px;
-            margin: 80px auto;
-            background: white;
-            padding: 32px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-        }
-        .login-box h2 { margin-bottom: 16px; }
-        .login-box input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            margin-bottom: 16px;
-        }
-        .login-box button {
-            width: 100%;
-            padding: 12px;
-            background: #0f172a;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .login-box button:hover { background: #1e293b; }
-        .error { color: #dc2626; margin-top: 8px; display: none; }
-        .hidden { display: none !important; }
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin: 24px 0;
-            flex-wrap: wrap;
-        }
-        .tab-btn {
-            padding: 10px 24px;
-            border: none;
-            background: #e2e8f0;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.95rem;
-        }
+        .tabs { display: flex; gap: 8px; margin: 24px 0; flex-wrap: wrap; }
+        .tab-btn { padding: 10px 24px; border: none; background: #e2e8f0; border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.95rem; }
         .tab-btn.active { background: #0f172a; color: white; }
         .tab-btn:hover:not(.active) { background: #cbd5e1; }
-        .tab-content {
-            display: none;
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-        }
+        .tab-content { display: none; background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
         .tab-content.active { display: block; }
-        .card {
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-        }
+        .card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 16px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
         .card-info { flex: 1; min-width: 200px; overflow-wrap: break-word; word-break: break-word; }
         .card-info strong { display: block; font-size: 1.1rem; }
         .card-info .meta { font-size: 0.85rem; color: #475569; }
-        .card-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .btn-activate {
-            background: #f59e0b;
-            color: #0f172a;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn-activate:hover { background: #d97706; }
-        .btn-approve {
-            background: #16a34a;
-            color: white;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn-approve:hover { background: #15803d; }
-        .btn-reject {
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn-reject:hover { background: #b91c1c; }
-        .btn-delete {
-            background: #94a3b8;
-            color: white;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn-delete:hover { background: #64748b; }
-        .badge {
-            display: inline-block;
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 2px 10px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        .badge-pending { background: #fef08a; color: #854d0e; }
+        .badge { display: inline-block; font-size: 0.7rem; font-weight: 600; padding: 2px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.3px; }
         .badge-approved { background: #bbf7d0; color: #14532d; }
-        .badge-rejected { background: #fecaca; color: #7f1d1d; }
-        .inquiry-item {
-            border-bottom: 1px solid #e2e8f0;
-            padding: 12px 0;
-        }
+        .inquiry-item { border-bottom: 1px solid #e2e8f0; padding: 12px 0; }
         .inquiry-item:last-child { border: none; }
         .inquiry-item .q { font-weight: 600; }
-        .inquiry-item .detail { font-size: 0.9rem; color: #475569; }
+        .inquiry-item .detail { font-size: 0.9rem; color: #475569; word-break: break-word; }
         .empty { color: #94a3b8; text-align: center; padding: 32px 0; }
-        .stats {
-            display: flex;
-            gap: 24px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-        .stat {
-            background: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            font-size: 0.9rem;
-        }
+        .stats { display: flex; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+        .stat { background: white; padding: 12px 24px; border-radius: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); font-size: 0.9rem; }
         .stat span { font-weight: 700; font-size: 1.2rem; margin-right: 6px; }
-        .logout-btn {
-            float: right;
-            background: none;
-            border: none;
-            color: #64748b;
-            cursor: pointer;
-            font-size: 0.9rem;
-            text-decoration: underline;
-        }
-        .logout-btn:hover { color: #0f172a; }
         @media (max-width: 600px) {
             .card { flex-direction: column; align-items: stretch; }
-            .card-actions { justify-content: flex-start; }
             .tabs { gap: 4px; }
             .tab-btn { padding: 6px 14px; font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
-    <div class="container" id="app">
-        <div id="loginScreen" class="login-box">
-            <h2>🔐 Admin Login</h2>
-            <p style="color:#475569;margin-bottom:16px;">Enter your password to manage listings.</p>
-            <input type="password" id="passwordInput" placeholder="Enter password" />
-            <button id="loginBtn">Login</button>
-            <div id="loginError" class="error">Incorrect password. Try again.</div>
+    <div class="container">
+        <h1>📊 Admin Dashboard</h1>
+        <p class="sub">Read‑only view of live listings and inquiries. Approve/reject via GitHub.</p>
+
+        <div class="stats" id="statsContainer"></div>
+
+        <div class="tabs" id="tabButtons">
+            <button class="tab-btn active" data-tab="listings">Live Listings</button>
+            <button class="tab-btn" data-tab="inquiries">Inquiries</button>
         </div>
 
-        <div id="dashboard" class="hidden">
-            <header style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-                <div>
-                    <h1>🛠️ Admin Panel</h1>
-                    <p class="sub">Manage services and view inquiries.</p>
-                </div>
-                <button class="logout-btn" id="logoutBtn">Logout</button>
-            </header>
-
-            <div class="stats" id="statsContainer"></div>
-
-            <div class="tabs" id="tabButtons">
-                <button class="tab-btn active" data-tab="pending">Pending</button>
-                <button class="tab-btn" data-tab="approved">Approved</button>
-                <button class="tab-btn" data-tab="rejected">Rejected</button>
-                <button class="tab-btn" data-tab="inquiries">Inquiries</button>
-            </div>
-
-            <div id="tabPending" class="tab-content active"></div>
-            <div id="tabApproved" class="tab-content"></div>
-            <div id="tabRejected" class="tab-content"></div>
-            <div id="tabInquiries" class="tab-content"></div>
-        </div>
+        <div id="tabListings" class="tab-content active"></div>
+        <div id="tabInquiries" class="tab-content"></div>
     </div>
 
     <script>
-        var ADMIN_PASSWORD = 'admin123';
-        var SERVICES_KEY = 'trustedpros_services';
-        var INQUIRIES_KEY = 'trustedpros_inquiries';
+        var DATA_URL = 'https://raw.githubusercontent.com/samellr/trustedpros/main/data.json';
+        var ISSUES_URL = 'https://api.github.com/repos/samellr/trustedpros/issues?labels=inquiry&state=open';
 
-        function getServices() {
-            return JSON.parse(localStorage.getItem(SERVICES_KEY) || '[]');
-        }
-        function saveServices(services) {
-            localStorage.setItem(SERVICES_KEY, JSON.stringify(services));
-        }
-        function getInquiries() {
-            return JSON.parse(localStorage.getItem(INQUIRIES_KEY) || '[]');
-        }
-        function saveInquiries(inquiries) {
-            localStorage.setItem(INQUIRIES_KEY, JSON.stringify(inquiries));
-        }
+        var allServices = [];
 
-        var loginScreen = document.getElementById('loginScreen');
-        var dashboard = document.getElementById('dashboard');
-        var passwordInput = document.getElementById('passwordInput');
-        var loginBtn = document.getElementById('loginBtn');
-        var loginError = document.getElementById('loginError');
-
-        function checkLogin() {
-            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-                loginScreen.classList.add('hidden');
-                dashboard.classList.remove('hidden');
-                renderAll();
-            }
+        function loadServices(callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', DATA_URL, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) { try { allServices = JSON.parse(xhr.responseText); } catch(e) { allServices = []; } }
+                else { allServices = []; }
+                callback();
+            };
+            xhr.onerror = function() { allServices = []; callback(); };
+            xhr.send();
         }
 
-        loginBtn.addEventListener('click', function() {
-            if (passwordInput.value === ADMIN_PASSWORD) {
-                sessionStorage.setItem('adminLoggedIn', 'true');
-                loginError.style.display = 'none';
-                loginScreen.classList.add('hidden');
-                dashboard.classList.remove('hidden');
-                renderAll();
-            } else {
-                loginError.style.display = 'block';
-                passwordInput.value = '';
-                passwordInput.focus();
-            }
-        });
-
-        passwordInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') loginBtn.click();
-        });
-
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            sessionStorage.removeItem('adminLoggedIn');
-            location.reload();
-        });
-
-        function renderStats(services) {
-            var pending = 0, approved = 0, rejected = 0;
-            for (var i = 0; i < services.length; i++) {
-                if (services[i].status === 'pending') pending++;
-                else if (services[i].status === 'approved' && services[i].paid === true) approved++;
-                else if (services[i].status === 'rejected') rejected++;
-            }
-            var inquiries = getInquiries().length;
+        function renderStats() {
+            var approved = allServices.filter(function(s) { return s.status === 'approved' && s.paid === true; }).length;
+            var pending = allServices.filter(function(s) { return s.status === 'pending'; }).length;
             document.getElementById('statsContainer').innerHTML =
-                '<div class="stat"><span>' + pending + '</span> Pending</div>' +
-                '<div class="stat"><span>' + approved + '</span> Active (Paid)</div>' +
-                '<div class="stat"><span>' + rejected + '</span> Rejected</div>' +
-                '<div class="stat"><span>' + inquiries + '</span> Inquiries</div>';
+                '<div class="stat"><span>' + approved + '</span> Live</div>' +
+                '<div class="stat"><span>' + pending + '</span> In data.json (pending)</div>';
         }
 
-        function renderTab(tabId, services) {
-            var container = document.getElementById(tabId);
-            var items = [];
-            if (tabId === 'tabPending') {
-                items = services.filter(function(s) { return s.status === 'pending'; });
-            } else if (tabId === 'tabApproved') {
-                items = services.filter(function(s) { return s.status === 'approved' && s.paid === true; });
-            } else if (tabId === 'tabRejected') {
-                items = services.filter(function(s) { return s.status === 'rejected'; });
-            } else if (tabId === 'tabInquiries') {
-                var inquiries = getInquiries();
-                if (inquiries.length === 0) {
-                    container.innerHTML = '<div class="empty">No inquiries yet.</div>';
-                    return;
-                }
-                var html = '';
-                for (var i = 0; i < inquiries.length; i++) {
-                    var inq = inquiries[i];
-                    html += '<div class="inquiry-item">' +
-                        '<div class="q">' + inq.name + ' (' + inq.email + ') – ' + inq.phone + '</div>' +
-                        '<div class="detail">Service: ' + inq.serviceTitle + ' (by ' + inq.sellerName + ')</div>' +
-                        '<div class="detail" style="margin-top:4px;background:#f8fafc;padding:8px;border-radius:4px;">' + inq.message + '</div>' +
-                        '<div style="margin-top:4px;font-size:0.75rem;color:#94a3b8;">' + new Date(inq.submittedAt).toLocaleString() + '</div>' +
-                        '<button class="btn-delete" style="margin-top:6px;" data-inquiry-index="' + i + '">Delete</button>' +
-                        '</div>';
-                }
-                container.innerHTML = html;
-                var deleteBtns = container.querySelectorAll('[data-inquiry-index]');
-                for (var j = 0; j < deleteBtns.length; j++) {
-                    deleteBtns[j].addEventListener('click', function() {
-                        var idx = parseInt(this.getAttribute('data-inquiry-index'), 10);
-                        var inquiries = getInquiries();
-                        inquiries.splice(idx, 1);
-                        saveInquiries(inquiries);
-                        renderAll();
-                    });
-                }
-                return;
-            }
-
-            if (items.length === 0) {
-                var titles = { 'tabPending': 'pending approvals', 'tabApproved': 'active listings', 'tabRejected': 'rejected listings' };
-                container.innerHTML = '<div class="empty">No ' + (titles[tabId] || 'items') + '.</div>';
-                return;
-            }
-
+        function renderListings() {
+            var container = document.getElementById('tabListings');
+            var items = allServices.filter(function(s) { return s.status === 'approved' && s.paid === true; });
+            if (items.length === 0) { container.innerHTML = '<div class="empty">No live listings.</div>'; return; }
             var html = '';
-            for (var i = 0; i < items.length; i++) {
-                var service = items[i];
-                var badgeClass = service.status === 'pending' ? 'badge-pending' : (service.status === 'approved' ? 'badge-approved' : 'badge-rejected');
-                var planDisplay = service.plan ? service.plan + ' – R' + service.planPrice : 'No plan';
-                var paidDisplay = service.paid ? '✅ Paid' : '❌ Unpaid';
-                var desc = service.description.length > 120 ? service.description.substring(0, 120) + '…' : service.description;
-                html += '<div class="card" data-id="' + service.id + '">' +
+            items.forEach(function(service) {
+                var desc = service.description.length > 150 ? service.description.substring(0, 150) + '…' : service.description;
+                html += '<div class="card">' +
                     '<div class="card-info">' +
-'<div style="margin-bottom:8px;display:flex;gap:6px;flex-wrap:wrap;">' +
-  (service.images && service.images.length > 0 ?
-    service.images.map(function(img) {
-      return '<img src="' + img + '" style="max-width:80px;max-height:60px;border-radius:6px;object-fit:cover;">';
-    }).join('') :
-    (service.image ? '<img src="' + service.image + '" style="max-width:80px;max-height:60px;border-radius:6px;object-fit:cover;" onerror="this.style.display=\'none\'">' : '<span style="font-size:0.8rem;color:#94a3b8;">No image</span>')
-  ) +
-'</div>' +
-
-'<div class="meta">' + service.category + ' • ' + service.location + '</div>' +
+                    (service.image ? '<img src="' + service.image + '" style="max-width:120px;max-height:80px;border-radius:6px;object-fit:cover;margin-bottom:8px;" onerror="this.style.display=\'none\'">' : '') +
+                    '<strong>' + service.title + '</strong>' +
+                    '<div class="meta">' + service.category + ' • ' + service.location + '</div>' +
                     '<div class="meta">Seller: ' + service.sellerName + ' (' + (service.sellerPhone || 'no phone') + ')</div>' +
-                    '<div class="meta">Plan: ' + planDisplay + ' – ' + paidDisplay + '</div>' +
-                    '<div style="margin-top:4px;"><span class="badge ' + badgeClass + '">' + service.status + '</span></div>' +
+                    '<div class="meta">Plan: ' + (service.plan || 'N/A') + ' – R' + (service.planPrice || 0) + ' | ' + (service.paid ? '✅ Paid' : '❌ Unpaid') + '</div>' +
+                    '<span class="badge badge-approved">Live</span>' +
                     '<div style="font-size:0.8rem;color:#94a3b8;margin-top:4px;">' + desc + '</div>' +
-                    '</div>' +
-                    '<div class="card-actions">' +
-                    (service.status === 'pending' ?
-                        '<button class="btn-activate" data-action="activate">Activate (Mark Paid)</button>' +
-                        '<button class="btn-approve" data-action="approve">Approve (Free)</button>' +
-                        '<button class="btn-reject" data-action="reject">Reject</button>' :
-                        '<button class="btn-delete" data-action="delete">Delete</button>') +
                     '</div></div>';
-            }
+            });
             container.innerHTML = html;
-
-            var actionBtns = container.querySelectorAll('[data-action]');
-            for (var k = 0; k < actionBtns.length; k++) {
-                actionBtns[k].addEventListener('click', function() {
-                    var card = this.closest('.card');
-                    var id = card.getAttribute('data-id');
-                    var action = this.getAttribute('data-action');
-                    var services = getServices();
-                    var service = services.find(function(s) { return s.id === id; });
-                    if (!service) return;
-                    if (action === 'activate') {
-                        var planDurations = { '1month': 30, '2months': 60, '3months': 90, '4months': 120 };
-                        var days = planDurations[service.plan] || 30;
-                        service.paid = true;
-                        service.expiresAt = new Date(Date.now() + days * 86400000).toISOString();
-                        service.status = 'approved';
-                        alert('✅ Service activated! Expires in ' + days + ' days.');
-                    } else if (action === 'approve') {
-                        service.status = 'approved';
-                        service.paid = true;   // <-- FIX: mark as paid so it appears on the public site
-                    } else if (action === 'reject') {
-                        service.status = 'rejected';
-                    } else if (action === 'delete') {
-                        if (!confirm('Delete this listing permanently?')) return;
-                        services = services.filter(function(s) { return s.id !== id; });
-                    }
-                    saveServices(services);
-                    renderAll();
-                });
-            }
         }
 
-        function renderAll() {
-            var services = getServices();
-            renderStats(services);
-            renderTab('tabPending', services);
-            renderTab('tabApproved', services);
-            renderTab('tabRejected', services);
-            renderTab('tabInquiries', services);
+        function renderInquiries() {
+            var container = document.getElementById('tabInquiries');
+            container.innerHTML = '<div class="empty">Loading inquiries…</div>';
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', ISSUES_URL, true);
+            xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var issues = JSON.parse(xhr.responseText);
+                    if (issues.length === 0) { container.innerHTML = '<div class="empty">No inquiries.</div>'; return; }
+                    var html = '';
+                    issues.forEach(function(issue) {
+                        html += '<div class="inquiry-item">' +
+                            '<div class="q">#' + issue.number + ' – ' + issue.title + '</div>' +
+                            '<div class="detail" style="white-space:pre-wrap;">' + (issue.body || '') + '</div>' +
+                            '<div style="font-size:0.75rem;color:#94a3b8;">' + new Date(issue.created_at).toLocaleString() + '</div>' +
+                            '</div>';
+                    });
+                    container.innerHTML = html;
+                } else { container.innerHTML = '<div class="empty">Could not load inquiries.</div>'; }
+            };
+            xhr.onerror = function() { container.innerHTML = '<div class="empty">Network error.</div>'; };
+            xhr.send();
         }
+
+        function renderAll() { renderStats(); renderListings(); }
 
         document.getElementById('tabButtons').addEventListener('click', function(e) {
             var btn = e.target.closest('.tab-btn');
             if (!btn) return;
             var tabId = btn.getAttribute('data-tab');
-            var allBtns = document.querySelectorAll('.tab-btn');
-            for (var i = 0; i < allBtns.length; i++) allBtns[i].classList.remove('active');
+            document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
-            var allContents = document.querySelectorAll('.tab-content');
-            for (var i = 0; i < allContents.length; i++) allContents[i].classList.remove('active');
-            var targetMap = { 'pending': 'tabPending', 'approved': 'tabApproved', 'rejected': 'tabRejected', 'inquiries': 'tabInquiries' };
-            document.getElementById(targetMap[tabId]).classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+            document.getElementById(tabId === 'listings' ? 'tabListings' : 'tabInquiries').classList.add('active');
+            if (tabId === 'inquiries') renderInquiries();
         });
 
-        checkLogin();
+        loadServices(function() { renderAll(); });
     </script>
 </body>
 </html>
