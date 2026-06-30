@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustedPros – Local Services Marketplace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0F172A;
+            --accent: #D4A373;
+            --accent-hover: #C8925A;
+            --bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-dark: #0F172A;
+            --text-muted: #475569;
+            --border-light: #E2E8F0;
+            --shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+            --shadow-hover: 0 16px 48px rgba(15, 23, 42, 0.15);
+            --font-heading: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: var(--primary); text-decoration: none; }
+        ul { list-style: none; }
+        .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--primary);
+        }
+        h1 { font-size: clamp(2.2rem, 6vw, 3.8rem); }
+        h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+        h3 { font-size: clamp(1.2rem, 2.5vw, 1.5rem); }
+        .section-title { text-align: center; margin-bottom: 32px; }
+        .gold { color: var(--accent); }
+
+        .btn-primary {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: var(--radius-md);
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            font-family: var(--font-body);
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(212, 163, 115, 0.35);
+        }
+        .btn-block { display: block; width: 100%; }
+        .btn-outline {
+            display: inline-block;
+            background: transparent;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--border-light);
+            transition: all 0.25s ease;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            background: rgba(212, 163, 115, 0.08);
+        }
+        .btn-ghost {
+            display: inline-block;
+            color: var(--text-muted);
+            font-weight: 500;
+            padding: 14px 8px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .btn-ghost:hover {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .site-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .logo-mark {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+        .logo-mark .gold { color: var(--accent); }
+        .logo-tagline {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            background: var(--bg);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .main-nav ul {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+        .main-nav a {
+            font-weight: 500;
+            color: var(--text-dark);
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+        .main-nav a:hover { color: var(--accent); }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .hero {
+            padding: 48px 0 64px;
+            background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+        }
+        .hero-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+        .hero-content h1 { margin-bottom: 16px; }
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin-bottom: 32px;
+        }
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .hero-image img {
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-hover);
+            object-fit: cover;
+            width: 100%;
+            height: 360px;
+        }
+
+        .how-it-works {
+            padding: 64px 0;
+            background: var(--card-bg);
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 24px;
+        }
+        .step {
+            text-align: center;
+            padding: 32px;
+            background: var(--bg);
+            border-radius: var(--radius-md);
+            transition: transform 0.2s;
+        }
+        .step:hover { transform: translateY(-6px); }
+        .step-number {
+            font-family: var(--font-heading);
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(212, 163, 115, 0.12);
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+        }
+        .step h3 { margin-bottom: 8px; }
+        .step p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .listings-section {
+            padding: 64px 0;
+        }
+        .listings-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+        .search-wrapper {
+            width: 100%;
+            max-width: 500px;
+        }
+        .search-wrapper input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid var(--border-light);
+            border-radius: 50px;
+            font-size: 1rem;
+            font-family: var(--font-body);
+            background: var(--card-bg);
+            transition: border 0.2s;
+        }
+        .search-wrapper input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .category-pills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+        .pill {
+            padding: 8px 20px;
+            border: 2px solid var(--border-light);
+            border-radius: 50px;
+            background: var(--card-bg);
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .pill:hover {
+            border-color: var(--accent);
+            color: var(--primary);
+        }
+        .pill.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 32px;
+        }
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--text-muted);
+            padding: 48px 0;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+        .card-image {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+            background: var(--bg);
+        }
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .card-category {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .card-body { padding: 24px; }
+        .card-body h3 {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .card-description {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 8px 0 16px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-light);
+            padding-top: 16px;
+            margin-top: 8px;
+        }
+        .card-seller {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .btn-contact {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-contact:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: var(--card-bg);
+            max-width: 560px;
+            width: 100%;
+            padding: 32px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-hover);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-wide { max-width: 720px; }
+        .modal-close {
+            position: sticky;
+            top: 0;
+            float: right;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            line-height: 1;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0 8px;
+        }
+        .modal-close:hover { color: var(--primary); }
+        .modal-box h2 { margin-bottom: 8px; }
+        .modal-sub {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+        }
+        .modal-footnote {
+            margin-top: 24px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+            border-top: 1px solid var(--border-light);
+            padding-top: 16px;
+        }
+
+        .form-group { margin-bottom: 24px; }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            color: var(--primary);
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            background: var(--bg);
+            transition: border 0.2s;
+            color: var(--text-dark);
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(212, 163, 115, 0.15);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* PLAN CARDS */
+        .plan-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 4px;
+        }
+        .plan-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 14px 8px;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            background: var(--bg);
+        }
+        .plan-card:hover { border-color: var(--accent); }
+        .plan-card input[type="radio"] { display: none; }
+        .plan-card.selected {
+            border-color: var(--accent);
+            background: rgba(212, 163, 115, 0.08);
+        }
+        .plan-duration {
+            display: block;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+        .plan-price {
+            display: block;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .site-footer {
+            background: var(--primary);
+            color: rgba(255, 255, 255, 0.8);
+            padding-top: 48px;
+            margin-top: 32px;
+        }
+        .footer-inner {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 32px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .footer-col .logo-mark { color: #fff; }
+        .footer-col .logo-mark .gold { color: var(--accent); }
+        .footer-tagline {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+        .footer-col h4 {
+            color: #fff;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+        .footer-col ul li { margin-bottom: 6px; }
+        .footer-col a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: color 0.2s;
+            font-size: 0.9rem;
+        }
+        .footer-col a:hover { color: var(--accent); }
+        .footer-safe {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            line-height: 1.5;
+        }
+        .footer-bottom {
+            padding: 16px 0;
+            font-size: 0.8rem;
+            opacity: 0.5;
+            text-align: center;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-inner { grid-template-columns: 1fr; text-align: center; }
+            .hero-sub { margin: 0 auto 32px; }
+            .hero-cta { justify-content: center; }
+            .hero-image img { height: 260px; }
+            .steps-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .header-inner { flex-wrap: wrap; }
+            .main-nav {
+                display: none;
+                width: 100%;
+                padding-top: 16px;
+                border-top: 1px solid var(--border-light);
+                margin-top: 16px;
+            }
+            .main-nav.open { display: block; }
+            .main-nav ul {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+            .main-nav ul li { width: 100%; }
+            .main-nav ul li a {
+                display: block;
+                padding: 8px 0;
+                text-align: center;
+            }
+            .hamburger { display: flex; }
+            .steps-grid { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr; text-align: center; gap: 24px; }
+            .form-grid-2 { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            .modal-box { padding: 24px; margin: 16px; }
+            .hero { padding: 32px 0 48px; }
+            .hero-image img { height: 200px; }
+            .plan-selector { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .plan-card { padding: 10px 4px; }
+        }
+        @media (max-width: 400px) {
+            .logo-tagline { display: none; }
+            .btn-primary { padding: 12px 20px; font-size: 0.9rem; }
+            .pill { padding: 6px 14px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo">
+                <span class="logo-mark">Trusted<span class="gold">Pros</span></span>
+                <span class="logo-tagline">Vetted. Secure. Local.</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#listings">Browse</a></li>
+                    <li><a href="#how-it-works">How it works</a></li>
+                    <li><a href="#" class="btn-outline" id="openPostBtn">List your service</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger" aria-label="Menu" id="hamburgerBtn">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- HERO -->
+        <section class="hero" id="hero">
+            <div class="container hero-inner">
+                <div class="hero-content">
+                    <h1>Find trusted <span class="gold">professionals</span> near you</h1>
+                    <p class="hero-sub">Every service is vetted by our team. No scams, no hassles – just quality work.</p>
+                    <div class="hero-cta">
+                        <a href="#listings" class="btn-primary">Browse services</a>
+                        <a href="#how-it-works" class="btn-ghost">Learn more →</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&auto=format&fit=crop" alt="Professional worker" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="how-it-works" id="how-it-works">
+            <div class="container">
+                <h2 class="section-title">How it <span class="gold">works</span></h2>
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Entrepreneur lists</h3>
+                        <p>Skilled pros submit their services with details &amp; pricing.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Admin approves</h3>
+                        <p>We manually review every listing to ensure quality &amp; relevance.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>You connect safely</h3>
+                        <p>Request contact via our secure form – no personal numbers exposed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LISTINGS -->
+        <section class="listings-section" id="listings">
+            <div class="container">
+                <div class="listings-header">
+                    <h2 class="section-title">Available <span class="gold">services</span></h2>
+                    <div class="category-pills" id="categoryPills">
+                        <button class="pill active" data-cat="all">All</button>
+                        <button class="pill" data-cat="Home & Garden">Home & Garden</button>
+                        <button class="pill" data-cat="Beauty">Beauty</button>
+                        <button class="pill" data-cat="Logistics">Logistics</button>
+                        <button class="pill" data-cat="Cleaning">Cleaning</button>
+                        <button class="pill" data-cat="Other">Other</button>
+                    </div>
+                </div>
+                <div class="services-grid" id="servicesGrid"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CONTACT MODAL -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-box">
+            <button class="modal-close" id="closeContactModal">&times;</button>
+            <h2>Request contact</h2>
+            <p class="modal-sub">Your details go to the admin. We'll forward your request to the professional.</p>
+            <form id="contactForm" novalidate>
+                <div class="form-group">
+                    <label for="contactName">Full name *</label>
+                    <input type="text" id="contactName" placeholder="e.g. Jane Mokoena" required minlength="3">
+                </div>
+                <div class="form-group">
+                    <label for="contactEmail">Email address *</label>
+                    <input type="email" id="contactEmail" placeholder="jane@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactPhone">Phone number *</label>
+                    <input type="tel" id="contactPhone" placeholder="082 123 4567" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactMessage">Your message *</label>
+                    <textarea id="contactMessage" rows="4" placeholder="Describe what you need..." required minlength="10"></textarea>
+                </div>
+                <input type="hidden" id="contactServiceId" value="">
+                <button type="submit" class="btn-primary btn-block">Send request securely</button>
+            </form>
+            <p class="modal-footnote">🔒 Your info is only shared with the admin. Sellers never see your contact details directly.</p>
+        </div>
+    </div>
+
+    <!-- POST SERVICE MODAL -->
+    <div class="modal-overlay" id="postModal">
+        <div class="modal-box modal-wide">
+            <button class="modal-close" id="closePostModal">&times;</button>
+            <h2>List your service</h2>
+            <p class="modal-sub">Fill in the details below. Our admin will review and approve within 24 hours.</p>
+            <form id="postForm" novalidate>
+                <div class="form-group">
+                    <label for="postTitle">Service title *</label>
+                    <input type="text" id="postTitle" placeholder="e.g. Bathroom tiling specialist" required minlength="5">
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="postCategory">Category *</label>
+                        <select id="postCategory" required>
+                            <option value="">-- Select --</option>
+                            <option value="Home & Garden">Home & Garden</option>
+                            <option value="Beauty">Beauty</option>
+                            <option value="Logistics">Logistics</option>
+                            <option value="Cleaning">Cleaning</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="postLocation">Location / Area *</label>
+                        <input type="text" id="postLocation" placeholder="e.g. Polokwane CBD" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="postSeller">Your name / business name *</label>
+                    <input type="text" id="postSeller" placeholder="e.g. Thabo's Tiling" required>
+                </div>
+                <div class="form-group">
+                    <label for="postPhone">Your phone (for admin contact) *</label>
+                    <input type="tel" id="postPhone" placeholder="082 123 4567" required>
+                </div>
+                <div class="form-group">
+                    <label for="postImage">Image URL (optional)
+                    
+                    <!--xxxxxxxxxxxxxxxxx-->
+                    
+                    <div class="form-group">
+    <label for="postImages">Or upload from device (max 2)</label>
+    <input type="file" id="postImages" accept="image/*" multiple style="padding:8px;">
+    <small style="color:var(--text-muted);">Photos will be compressed. You can also paste a URL above.</small>
+</div>
+<div id="imagePreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
+
+                
+                </label>
+                    <input type="url" id="postImage" placeholder="https://example.com/photo.jpg">
+                </div>
+                <div class="form-group">
+                    <label for="postDescription">Full description (include your price) *</label>
+                    <textarea id="postDescription" rows="5" placeholder="Describe your service, experience, and include your price (e.g. '... – R1200 per job')" required minlength="20"></textarea>
+                </div>
+
+                <!-- PLAN SELECTOR -->
+                <div class="form-group">
+                    <label>Choose your listing plan *</label>
+                    <div class="plan-selector" id="planSelector">
+                        <label class="plan-card">
+                            <input type="radio" name="plan" value="1month" required>
+                            <span class="plan-duration">1 month</span>
+                            <span class="plan-price">R150</span>
+                        </label>
+                        <label class="plan-card">
+                            <input type="radio" name="plan" value="2months">
+                            <span class="plan-duration">2 months</span>
+                            <span class="plan-price">R280</span>
+                        </label>
+                        <label class="plan-card">
+                            <input type="radio" name="plan" value="3months">
+                            <span class="plan-duration">3 months</span>
+                            <span class="plan-price">R390</span>
+                        </label>
+                        <label class="plan-card">
+                            <input type="radio" name="plan" value="4months">
+                            <span class="plan-duration">4 months</span>
+                            <span class="plan-price">R480</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary btn-block">Submit for approval</button>
+            </form>
+            <p class="modal-footnote">✅ All submissions are manually reviewed. You'll be notified once approved.</p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-col">
+                <span class="logo-mark small">Trusted<span class="gold">Pros</span></span>
+                <p class="footer-tagline">Vetted local services, safely connected.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick links</h4>
+                <ul>
+                    <li><a href="#listings">Browse</a></li>
+                    <li><a href="#" id="footerPostLink">List your service</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Safety</h4>
+                <p class="footer-safe">All contact goes through our secure form. No direct personal info is shared.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 TrustedPros. Built with care in South Africa. 🇿🇦</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ========== DATA LAYER ==========
+        var SEED_SERVICES = [
+          // ---- APPROVED (visible) ----
+          {
+            id: "seed-001", title: "Bathroom & Kitchen Tiling Specialist", category: "Home & Garden",
+            location: "Polokwane CBD",
+            description: "10 years experience in ceramic, porcelain, and mosaic tiling. Floors, walls, custom patterns. Free quote within 24 hours. – R1 200 per job",
+            sellerName: "Thabo's Tiling", sellerPhone: "082 123 4501",
+            image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400",
+            status: "approved", submittedAt: "2026-06-01", plan: "4months", planPrice: 480, paid: true, expiresAt: null
+          },
+          {
+            id: "seed-002", title: "Full Garden Makeover & Landscaping", category: "Home & Garden",
+            location: "Bendor, Polokwane",
+            description: "From overgrown to outstanding. Planting, lawn, irrigation, garden lighting. Weekly maintenance available. – From R850",
+            sellerName: "GreenThumb Landscapes", sellerPhone: "082 123 4502",
+            image: "https://images.unsplash.com/photo-1558904541-ef8433a34f6b?w=400",
+            status: "approved", submittedAt: "2026-06-02", plan: "4months", planPrice: 480, paid: true, expiresAt: null
+          },
+          {
+            id: "seed-003", title: "Ladies' Hair Styling & Braiding Salon", category: "Beauty",
+            location: "Seshego, Polokwane",
+            description: "Knotless braids, twists, weaves, colour treatments. Premium products. Walk‑ins welcome. – R450 per style",
+            sellerName: "Glow Hair Studio", sellerPhone: "082 123 4503",
+            image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400",
+            status: "approved", submittedAt: "2026-06-03", plan: "4months", planPrice: 480, paid: true, expiresAt: null
+          },
+          {
+            id: "seed-004", title: "Same‑Day Parcel Delivery Service", category: "Logistics",
+            location: "Polokwane to Pretoria/JHB",
+            description: "Reliable door‑to‑door delivery for packages up to 30kg. Real‑time tracking. Same‑day collection. – From R150",
+            sellerName: "SwiftCourier SA", sellerPhone: "082 123 4504",
+            image: "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=400",
+            status: "approved", submittedAt: "2026-06-04", plan: "4months", planPrice: 480, paid: true, expiresAt: null
+          },
+          {
+            id: "seed-005", title: "Precision Haircuts for Men & Boys", category: "Beauty",
+            location: "Polokwane CBD",
+            description: "Classic cuts, fades, beard trims, hot towel shaves. Walk‑in only. Student discounts. – R200",
+            sellerName: "The Barber's Chair", sellerPhone: "082 123 4505",
+            image: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=400",
+            status: "approved", submittedAt: "2026-06-05", plan: "4months", planPrice: 480, paid: true, expiresAt: null
+          },
+          {
+            id: "seed-006", title: "Laundry & Ironing – Pickup & Deliver", category: "Cleaning",
+            location: "Bendor",
+            description: "Wash, dry, fold, iron. Same‑day return available. Eco‑friendly detergents. First wash free. – R300 per load",
+            sellerName: "FreshLinens Laundry", sellerPhone: "082 123 4506",
+            image: "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400",
+            status: "approved", submittedAt: "2026-06-06", plan: "4months", planPrice: 480, paid: true, expiresAt: null
+          },
+          {
+            id: "seed-007", title: "Indoor Maintenance – Plumbing & Electrical", category: "Home & Garden",
+            location: "Polokwane – All areas",
+            description: "Fixing leaks, geysers, rewiring, fault finding. Licensed and insured. 24/7 emergency. – R950",
+            sellerName: "FixIt All Services", sellerPhone: "082 123 4507",
+            image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400",
+            status: "approved", submittedAt: "2026-06-07", plan: "4months", planPrice: 480, paid: true, expiresAt: null
+          },
+          {
+            id: "seed-008", title: "Certified Electrician – Residential & Commercial", category: "Home & Garden",
+            location: "Seshego",
+            description: "DB board upgrades, lighting, solar prep, general electrical work. COC issued. 5‑year guarantee. – R1 100",
+            sellerName: "VoltSafe Electrical", sellerPhone: "082 123 4508",
+            image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400",
+            status: "approved", submittedAt: "2026-06-08", plan: "4months", planPrice: 480, paid: true, expiresAt: null
+          },
+          {
+            id: "seed-009", title: "Garden Pruning & Tree Felling", category: "Home & Garden",
+            location: "Bendor, Polokwane",
+            description: "Safe tree removal, stump grinding, hedge trimming, palm maintenance. Fully insured arborists. – From R600",
+            sellerName: "TreeCare Pros", sellerPhone: "082 123 4509",
+            image: "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=400",
+            status: "approved", submittedAt: "2026-06-09", plan: "4months", planPrice: 480, paid: true, expiresAt: null
+          },
+          // ---- PENDING (for admin approval) ----
+          {
+            id: "seed-010", title: "Commercial Cleaning – Offices & Retail", category: "Cleaning",
+            location: "Polokwane CBD",
+            description: "Daily/weekly/monthly cleaning contracts. Carpet shampoo, window washing, deep sanitation. Eco‑friendly. – From R750",
+            sellerName: "Sparkle Commercial Cleaners", sellerPhone: "082 123 4510",
+            image: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=400",
+            status: "pending", submittedAt: "2026-06-10", plan: "4months", planPrice: 480, paid: false, expiresAt: null
+          },
+          {
+            id: "seed-011", title: "Furniture Assembly & Handyman Services", category: "Home & Garden",
+            location: "Bendor",
+            description: "Flat‑pack assembly, wall mounting, curtain rails, general repairs. Hourly or per‑job rates. – R450 / hour",
+            sellerName: "HandyPro SA", sellerPhone: "082 123 4511",
+            image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400",
+            status: "pending", submittedAt: "2026-06-11", plan: "4months", planPrice: 480, paid: false, expiresAt: null
+          },
+          {
+            id: "seed-012", title: "Wedding Hair & Makeup Specialist", category: "Beauty",
+            location: "Polokwane & surrounds",
+            description: "On‑site bridal hair, airbrush makeup, trial sessions. Packages for bridesmaids, mother of the bride. – From R1 500",
+            sellerName: "Bridal Beauty Co.", sellerPhone: "082 123 4512",
+            image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400",
+            status: "pending", submittedAt: "2026-06-12", plan: "4months", planPrice: 480, paid: false, expiresAt: null
+          },
+          {
+            id: "seed-013", title: "Furniture Removal & Transport", category: "Logistics",
+            location: "Polokwane – All areas",
+            description: "House & office removals. 3‑ton truck with tail lift, two movers. Insurance optional. – From R900",
+            sellerName: "MoveIt Removals", sellerPhone: "082 123 4513",
+            image: "https://images.unsplash.com/photo-1600320254374-ce2d293c324e?w=400",
+            status: "pending", submittedAt: "2026-06-13", plan: "4months", planPrice: 480, paid: false, expiresAt: null
+          },
+          {
+            id: "seed-014", title: "Deep Cleaning & Carpet Shampooing", category: "Cleaning",
+            location: "Seshego",
+            description: "Steam cleaning for carpets, upholstery, mattresses. Pet stain specialist. Dries within 4 hours. – R550",
+            sellerName: "SteamClean Experts", sellerPhone: "082 123 4514",
+            image: "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400",
+            status: "pending", submittedAt: "2026-06-14", plan: "4months", planPrice: 480, paid: false, expiresAt: null
+          },
+          {
+            id: "seed-015", title: "Pool Maintenance & Chemical Balancing", category: "Home & Garden",
+            location: "Bendor, Polokwane",
+            description: "Weekly pool cleaning, pH balancing, equipment repairs. Full chemical kit with first service. – R650 / month",
+            sellerName: "ClearWater Pools", sellerPhone: "082 123 4515",
+            image: "https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=400",
+            status: "pending", submittedAt: "2026-06-15", plan: "4months", planPrice: 480, paid: false, expiresAt: null
+          },
+          {
+            id: "seed-016", title: "Plastering & Ceiling Installation", category: "Home & Garden",
+            location: "Mankweng, Polokwane",
+            description: "Interior/exterior plastering, ceiling boards, cornice fitting. Quality finish guaranteed. – From R800",
+            sellerName: "SmoothFinish Plasterers", sellerPhone: "082 123 4516",
+            image: "https://images.unsplash.com/photo-1581092335871-4bfa5c6da3e8?w=400",
+            status: "pending", submittedAt: "2026-06-16", plan: "4months", planPrice: 480, paid: false, expiresAt: null
+          },
+          {
+            id: "seed-017", title: "Mobile Car Wash & Detailing", category: "Cleaning",
+            location: "Polokwane – all areas",
+            description: "We come to you! Full exterior wash, wax, vacuum, leather conditioning, engine bay clean. – From R250",
+            sellerName: "ShineMobile Wash", sellerPhone: "082 123 4517",
+            image: "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=400",
+            status: "pending", submittedAt: "2026-06-17", plan: "4months", planPrice: 480, paid: false, expiresAt: null
+          },
+          {
+            id: "seed-018", title: "Event Decor & Tent Hire", category: "Other",
+            location: "Polokwane & surrounds",
+            description: "Weddings, birthdays, corporate décor. Gazebos, tables, chairs, linens, lighting. Setup included. – From R1 200",
+            sellerName: "Celebration Décor Hire", sellerPhone: "082 123 4518",
+            image: "https://images.unsplash.com/photo-1519741497674-611481863552?w=400",
+            status: "pending", submittedAt: "2026-06-18", plan: "4months", planPrice: 480, paid: false, expiresAt: null
+          }
+        ];
+
+        var STORAGE_KEY = 'trustedpros_services';
+
+        function loadServices() {
+          var stored = localStorage.getItem(STORAGE_KEY);
+          if (stored) {
+            try { return JSON.parse(stored); }
+            catch (e) { return seedData(); }
+          }
+          return seedData();
+        }
+
+        function seedData() {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(SEED_SERVICES));
+          return SEED_SERVICES;
+        }
+
+        function saveServices(services) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(services));
+        }
+
+        function generateId() {
+          return Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
+        }
+
+        // ========== APP LOGIC ==========
+        var servicesGrid = document.getElementById('servicesGrid');
+        var categoryPillsContainer = document.getElementById('categoryPills');
+        var contactModal = document.getElementById('contactModal');
+        var postModal = document.getElementById('postModal');
+        var closeContactBtn = document.getElementById('closeContactModal');
+        var closePostBtn = document.getElementById('closePostModal');
+        var openPostBtns = document.querySelectorAll('#openPostBtn, #footerPostLink');
+        var contactForm = document.getElementById('contactForm');
+        var postForm = document.getElementById('postForm');
+        var contactServiceId = document.getElementById('contactServiceId');
+
+        var allServices = loadServices();
+        var currentFilter = 'all';
+        var currentSearch = '';
+
+        // ---- Validation helpers ----
+        function isValidPhone(phone) {
+          var cleaned = phone.replace(/[\s\-\(\)\+]/g, '');
+          if (cleaned.slice(0,1) === '0' && cleaned.length === 10 && /^\d+$/.test(cleaned)) return true;
+          if (cleaned.slice(0,3) === '+27' && cleaned.length === 12 && /^\+\d+$/.test(cleaned)) return true;
+          return false;
+        }
+        function isValidEmail(email) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+        function containsLetter(str) {
+          return /[a-zA-Z]/.test(str);
+        }
+        function containsPrice(str) {
+          return /R\s?\d/.test(str);
+        }
+
+        function validateServiceForm(data) {
+          var errors = [];
+          if (!data.title || data.title.trim().length < 5) errors.push('Title must be at least 5 characters.');
+          var categories = ['Home & Garden','Beauty','Logistics','Cleaning','Other'];
+          if (!data.category || categories.indexOf(data.category) === -1) errors.push('Select a valid category.');
+          if (!data.location || data.location.trim().length < 3) errors.push('Location is required (e.g. Polokwane CBD).');
+          if (!data.description || data.description.trim().length < 20) errors.push('Description must be at least 20 characters.');
+          if (data.description && !containsPrice(data.description)) errors.push('Please include your price in the description (e.g. "... – R500").');
+          if (!data.sellerName || !containsLetter(data.sellerName.trim())) errors.push('Name must contain letters, not just numbers.');
+          if (!data.sellerPhone || !isValidPhone(data.sellerPhone)) errors.push('Enter a valid SA phone number (e.g. 082 123 4567).');
+          if (data.image && !/^https?:\/\/.+/i.test(data.image.trim())) errors.push('Image must be a valid URL starting with http.');
+          return errors;
+        }
+
+        function validateContactForm(data) {
+          var errors = [];
+          if (!data.name || !containsLetter(data.name.trim())) errors.push('Name must contain letters.');
+          if (!data.email || !isValidEmail(data.email)) errors.push('Enter a valid email address.');
+          if (!data.phone || !isValidPhone(data.phone)) errors.push('Enter a valid SA phone number.');
+          if (!data.message || data.message.trim().length < 10) errors.push('Message must be at least 10 characters.');
+          return errors;
+        }
+
+        // ---- Rendering ----
+        function renderServices(services) {
+          var filtered = services;
+          if (currentFilter !== 'all') {
+            filtered = filtered.filter(function(s) { return s.category === currentFilter; });
+          }
+          if (currentSearch.trim() !== '') {
+            var q = currentSearch.trim().toLowerCase();
+            filtered = filtered.filter(function(s) {
+              return s.title.toLowerCase().indexOf(q) !== -1 ||
+                     s.description.toLowerCase().indexOf(q) !== -1 ||
+                     s.sellerName.toLowerCase().indexOf(q) !== -1;
+            });
+          }
+          filtered = filtered.filter(function(s) {
+            if (s.status !== 'approved') return false;
+            if (!s.paid) return false;
+            if (s.expiresAt && new Date(s.expiresAt) < new Date()) return false;
+            return true;
+          });
+
+          if (filtered.length === 0) {
+            servicesGrid.innerHTML = '<div class="empty-state"><p>No services match your criteria.</p><p style="font-size:0.9rem;color:var(--text-muted);">Try adjusting the filter or check back later.</p></div>';
+            return;
+          }
+
+          var html = '';
+          filtered.forEach(function(service) {
+            var desc = service.description.length > 90 ? service.description.substring(0, 90) + '…' : service.description;
+            html += '<div class="service-card" data-id="' + service.id + '">' +
+              '<div class="card-image">' +
+              '<img src="' + (service.image || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&auto=format&fit=crop') + '" alt="' + service.title + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&auto=format&fit=crop\'">' +
+              '<span class="card-category">' + service.category + '</span>' +
+              '</div>' +
+              '<div class="card-body">' +
+              '<h3>' + service.title + '</h3>' +
+              '<div class="card-meta"><span class="card-location">📍 ' + service.location + '</span></div>' +
+              '<p class="card-description">' + desc + '</p>' +
+              '<div class="card-footer"><span class="card-seller">' + service.sellerName + '</span>' +
+              '<button class="btn-contact" data-id="' + service.id + '">Request Contact</button></div>' +
+              '</div></div>';
+          });
+          servicesGrid.innerHTML = html;
+
+          var contactButtons = servicesGrid.querySelectorAll('.btn-contact');
+          for (var i = 0; i < contactButtons.length; i++) {
+            contactButtons[i].addEventListener('click', function(e) {
+              e.stopPropagation();
+              openContactModal(this.getAttribute('data-id'));
+            });
+          }
+        }
+
+        function initCategoryPills() {
+          var pills = categoryPillsContainer.querySelectorAll('.pill');
+          for (var i = 0; i < pills.length; i++) {
+            pills[i].addEventListener('click', function() {
+              for (var j = 0; j < pills.length; j++) pills[j].classList.remove('active');
+              this.classList.add('active');
+              currentFilter = this.getAttribute('data-cat');
+              renderServices(allServices);
+            });
+          }
+        }
+
+        function addSearchBar() {
+          var header = document.querySelector('.listings-header');
+          if (!header) return;
+          var searchWrapper = document.createElement('div');
+          searchWrapper.className = 'search-wrapper';
+          searchWrapper.innerHTML = '<input type="text" id="searchInput" placeholder="Search services, sellers, or keywords…" aria-label="Search services">';
+          header.appendChild(searchWrapper);
+          document.getElementById('searchInput').addEventListener('input', function() {
+            currentSearch = this.value;
+            renderServices(allServices);
+          });
+        }
+
+        // ---- Modals ----
+        function openContactModal(serviceId) {
+          contactServiceId.value = serviceId;
+          contactModal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+
+        function closeContactModalFn() {
+          contactModal.classList.remove('active');
+          document.body.style.overflow = '';
+          contactForm.reset();
+        }
+
+        function openPostModal() {
+          postModal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+          setTimeout(function() {
+            var radios = document.querySelectorAll('.plan-card input[type="radio"]');
+            for (var i = 0; i < radios.length; i++) {
+              radios[i].addEventListener('change', function() {
+                var allCards = document.querySelectorAll('.plan-card');
+                for (var j = 0; j < allCards.length; j++) allCards[j].classList.remove('selected');
+                this.parentNode.classList.add('selected');
+              });
+            }
+          }, 100);
+        }
+
+        function closePostModalFn() {
+          postModal.classList.remove('active');
+          document.body.style.overflow = '';
+          postForm.reset();
+          var cards = document.querySelectorAll('.plan-card');
+          for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
+        }
+
+        closeContactBtn.addEventListener('click', closeContactModalFn);
+        closePostBtn.addEventListener('click', closePostModalFn);
+        contactModal.addEventListener('click', function(e) { if (e.target === contactModal) closeContactModalFn(); });
+        postModal.addEventListener('click', function(e) { if (e.target === postModal) closePostModalFn(); });
+
+        for (var b = 0; b < openPostBtns.length; b++) {
+          openPostBtns[b].addEventListener('click', function(e) {
+            e.preventDefault();
+            openPostModal();
+          });
+        }
+
+        // ---- Form submissions ----
+        contactForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var name = document.getElementById('contactName').value.trim();
+          var email = document.getElementById('contactEmail').value.trim();
+          var phone = document.getElementById('contactPhone').value.trim();
+          var message = document.getElementById('contactMessage').value.trim();
+          var errors = validateContactForm({ name: name, email: email, phone: phone, message: message });
+          if (errors.length > 0) {
+            alert('Please fix the following:\n- ' + errors.join('\n- '));
+            return;
+          }
+          var serviceId = contactServiceId.value;
+          var service = allServices.find(function(s) { return s.id === serviceId; });
+          var inquiry = {
+            id: generateId(),
+            serviceId: serviceId,
+            serviceTitle: service ? service.title : 'Unknown',
+            sellerName: service ? service.sellerName : 'Unknown',
+            name: name,
+            email: email,
+            phone: phone,
+            message: message,
+            submittedAt: new Date().toISOString()
+          };
+          var inquiries = JSON.parse(localStorage.getItem('trustedpros_inquiries') || '[]');
+          inquiries.push(inquiry);
+          localStorage.setItem('trustedpros_inquiries', JSON.stringify(inquiries));
+          alert('✅ Your request has been sent securely. The admin will connect you with the professional shortly.');
+          closeContactModalFn();
+        });
+
+        postForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var title = document.getElementById('postTitle').value.trim();
+          var category = document.getElementById('postCategory').value;
+          var location = document.getElementById('postLocation').value.trim();
+          var sellerName = document.getElementById('postSeller').value.trim();
+          var sellerPhone = document.getElementById('postPhone').value.trim();
+          var image = document.getElementById('postImage').value.trim();
+          var description = document.getElementById('postDescription').value.trim();
+          var selectedPlan = document.querySelector('input[name="plan"]:checked');
+          if (!selectedPlan) {
+            alert('Please select a listing plan.');
+            return;
+          }
+          var planValue = selectedPlan.value;
+          var planPrices = { '1month': 150, '2months': 280, '3months': 390, '4months': 480 };
+
+          var errors = validateServiceForm({
+            title: title, category: category, location: location, description: description,
+            sellerName: sellerName, sellerPhone: sellerPhone, image: image, plan: planValue
+          });
+          if (errors.length > 0) {
+            alert('Please fix the following:\n- ' + errors.join('\n- '));
+            return;
+          }
+
+          var newService = {
+            id: generateId(),
+            title: title,
+            category: category,
+            location: location,
+            description: description,
+            sellerName: sellerName,
+            sellerPhone: sellerPhone,
+            image: image || (selectedImages.length > 0 ? selectedImages[0] : ''),
+images: selectedImages,  // store all picked images
+            status: 'pending',
+            submittedAt: new Date().toISOString(),
+            plan: planValue,
+            planPrice: planPrices[planValue],
+            paid: false,
+            expiresAt: null
+          };
+          allServices.push(newService);
+          saveServices(allServices);
+          alert('✅ Your service has been submitted for admin review. You will be notified once approved.');
+          closePostModalFn();
+        });
+
+        // ---- Mobile menu ----
+        document.getElementById('hamburgerBtn').addEventListener('click', function() {
+          var nav = document.querySelector('.main-nav');
+          nav.classList.toggle('open');
+        });
+        var navLinks = document.querySelectorAll('.main-nav a');
+        for (var k = 0; k < navLinks.length; k++) {
+          navLinks[k].addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.remove('open');
+          });
+        }
+
+        function init() {
+          addSearchBar();
+          initCategoryPills();
+          renderServices(allServices);
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+        
+        var selectedImages = [];
+
+document.getElementById('postImages').addEventListener('change', function(e) {
+    var files = e.target.files;
+    if (files.length > 2) {
+        alert('You can only upload a maximum of 2 images.');
+        this.value = '';
+        return;
+    }
+    selectedImages = [];
+    document.getElementById('imagePreview').innerHTML = '';
+    for (var i = 0; i < files.length; i++) {
+        (function(file) {
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+                // Compress image using canvas
+                var img = new Image();
+                img.onload = function() {
+                    var canvas = document.createElement('canvas');
+                    var maxW = 400;
+                    var scale = maxW / img.width;
+                    canvas.width = maxW;
+                    canvas.height = img.height * scale;
+                    var ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    var compressed = canvas.toDataURL('image/jpeg', 0.6);
+                    selectedImages.push(compressed);
+                    var preview = document.createElement('img');
+                    preview.src = compressed;
+                    preview.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:6px;';
+                    document.getElementById('imagePreview').appendChild(preview);
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        })(files[i]);
+    }
+});
+        
+    </script>
+</body>
+</html>
