@@ -478,7 +478,6 @@
             gap: 16px;
         }
 
-        /* PLAN CARDS */
         .plan-selector {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -688,7 +687,9 @@
                         <button class="pill" data-cat="Other">Other</button>
                     </div>
                 </div>
-                <div class="services-grid" id="servicesGrid"></div>
+                <div class="services-grid" id="servicesGrid">
+                    <div class="empty-state"><p>Loading services…</p></div>
+                </div>
             </div>
         </section>
 
@@ -761,19 +762,7 @@
                     <input type="tel" id="postPhone" placeholder="082 123 4567" required>
                 </div>
                 <div class="form-group">
-                    <label for="postImage">Image URL (optional)
-                    
-                    <!--xxxxxxxxxxxxxxxxx-->
-                    
-                    <div class="form-group">
-    <label for="postImages">Or upload from device (max 2)</label>
-    <input type="file" id="postImages" accept="image/*" multiple style="padding:8px;">
-    <small style="color:var(--text-muted);">Photos will be compressed. You can also paste a URL above.</small>
-</div>
-<div id="imagePreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
-
-                
-                </label>
+                    <label for="postImage">Image URL (optional)</label>
                     <input type="url" id="postImage" placeholder="https://example.com/photo.jpg">
                 </div>
                 <div class="form-group">
@@ -842,177 +831,35 @@
 
     <script>
         // ========== DATA LAYER ==========
-        var SEED_SERVICES = [
-          // ---- APPROVED (visible) ----
-          {
-            id: "seed-001", title: "Bathroom & Kitchen Tiling Specialist", category: "Home & Garden",
-            location: "Polokwane CBD",
-            description: "10 years experience in ceramic, porcelain, and mosaic tiling. Floors, walls, custom patterns. Free quote within 24 hours. – R1 200 per job",
-            sellerName: "Thabo's Tiling", sellerPhone: "082 123 4501",
-            image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400",
-            status: "approved", submittedAt: "2026-06-01", plan: "4months", planPrice: 480, paid: true, expiresAt: null
-          },
-          {
-            id: "seed-002", title: "Full Garden Makeover & Landscaping", category: "Home & Garden",
-            location: "Bendor, Polokwane",
-            description: "From overgrown to outstanding. Planting, lawn, irrigation, garden lighting. Weekly maintenance available. – From R850",
-            sellerName: "GreenThumb Landscapes", sellerPhone: "082 123 4502",
-            image: "https://images.unsplash.com/photo-1558904541-ef8433a34f6b?w=400",
-            status: "approved", submittedAt: "2026-06-02", plan: "4months", planPrice: 480, paid: true, expiresAt: null
-          },
-          {
-            id: "seed-003", title: "Ladies' Hair Styling & Braiding Salon", category: "Beauty",
-            location: "Seshego, Polokwane",
-            description: "Knotless braids, twists, weaves, colour treatments. Premium products. Walk‑ins welcome. – R450 per style",
-            sellerName: "Glow Hair Studio", sellerPhone: "082 123 4503",
-            image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400",
-            status: "approved", submittedAt: "2026-06-03", plan: "4months", planPrice: 480, paid: true, expiresAt: null
-          },
-          {
-            id: "seed-004", title: "Same‑Day Parcel Delivery Service", category: "Logistics",
-            location: "Polokwane to Pretoria/JHB",
-            description: "Reliable door‑to‑door delivery for packages up to 30kg. Real‑time tracking. Same‑day collection. – From R150",
-            sellerName: "SwiftCourier SA", sellerPhone: "082 123 4504",
-            image: "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=400",
-            status: "approved", submittedAt: "2026-06-04", plan: "4months", planPrice: 480, paid: true, expiresAt: null
-          },
-          {
-            id: "seed-005", title: "Precision Haircuts for Men & Boys", category: "Beauty",
-            location: "Polokwane CBD",
-            description: "Classic cuts, fades, beard trims, hot towel shaves. Walk‑in only. Student discounts. – R200",
-            sellerName: "The Barber's Chair", sellerPhone: "082 123 4505",
-            image: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=400",
-            status: "approved", submittedAt: "2026-06-05", plan: "4months", planPrice: 480, paid: true, expiresAt: null
-          },
-          {
-            id: "seed-006", title: "Laundry & Ironing – Pickup & Deliver", category: "Cleaning",
-            location: "Bendor",
-            description: "Wash, dry, fold, iron. Same‑day return available. Eco‑friendly detergents. First wash free. – R300 per load",
-            sellerName: "FreshLinens Laundry", sellerPhone: "082 123 4506",
-            image: "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=400",
-            status: "approved", submittedAt: "2026-06-06", plan: "4months", planPrice: 480, paid: true, expiresAt: null
-          },
-          {
-            id: "seed-007", title: "Indoor Maintenance – Plumbing & Electrical", category: "Home & Garden",
-            location: "Polokwane – All areas",
-            description: "Fixing leaks, geysers, rewiring, fault finding. Licensed and insured. 24/7 emergency. – R950",
-            sellerName: "FixIt All Services", sellerPhone: "082 123 4507",
-            image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400",
-            status: "approved", submittedAt: "2026-06-07", plan: "4months", planPrice: 480, paid: true, expiresAt: null
-          },
-          {
-            id: "seed-008", title: "Certified Electrician – Residential & Commercial", category: "Home & Garden",
-            location: "Seshego",
-            description: "DB board upgrades, lighting, solar prep, general electrical work. COC issued. 5‑year guarantee. – R1 100",
-            sellerName: "VoltSafe Electrical", sellerPhone: "082 123 4508",
-            image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400",
-            status: "approved", submittedAt: "2026-06-08", plan: "4months", planPrice: 480, paid: true, expiresAt: null
-          },
-          {
-            id: "seed-009", title: "Garden Pruning & Tree Felling", category: "Home & Garden",
-            location: "Bendor, Polokwane",
-            description: "Safe tree removal, stump grinding, hedge trimming, palm maintenance. Fully insured arborists. – From R600",
-            sellerName: "TreeCare Pros", sellerPhone: "082 123 4509",
-            image: "https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=400",
-            status: "approved", submittedAt: "2026-06-09", plan: "4months", planPrice: 480, paid: true, expiresAt: null
-          },
-          // ---- PENDING (for admin approval) ----
-          {
-            id: "seed-010", title: "Commercial Cleaning – Offices & Retail", category: "Cleaning",
-            location: "Polokwane CBD",
-            description: "Daily/weekly/monthly cleaning contracts. Carpet shampoo, window washing, deep sanitation. Eco‑friendly. – From R750",
-            sellerName: "Sparkle Commercial Cleaners", sellerPhone: "082 123 4510",
-            image: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=400",
-            status: "pending", submittedAt: "2026-06-10", plan: "4months", planPrice: 480, paid: false, expiresAt: null
-          },
-          {
-            id: "seed-011", title: "Furniture Assembly & Handyman Services", category: "Home & Garden",
-            location: "Bendor",
-            description: "Flat‑pack assembly, wall mounting, curtain rails, general repairs. Hourly or per‑job rates. – R450 / hour",
-            sellerName: "HandyPro SA", sellerPhone: "082 123 4511",
-            image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400",
-            status: "pending", submittedAt: "2026-06-11", plan: "4months", planPrice: 480, paid: false, expiresAt: null
-          },
-          {
-            id: "seed-012", title: "Wedding Hair & Makeup Specialist", category: "Beauty",
-            location: "Polokwane & surrounds",
-            description: "On‑site bridal hair, airbrush makeup, trial sessions. Packages for bridesmaids, mother of the bride. – From R1 500",
-            sellerName: "Bridal Beauty Co.", sellerPhone: "082 123 4512",
-            image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400",
-            status: "pending", submittedAt: "2026-06-12", plan: "4months", planPrice: 480, paid: false, expiresAt: null
-          },
-          {
-            id: "seed-013", title: "Furniture Removal & Transport", category: "Logistics",
-            location: "Polokwane – All areas",
-            description: "House & office removals. 3‑ton truck with tail lift, two movers. Insurance optional. – From R900",
-            sellerName: "MoveIt Removals", sellerPhone: "082 123 4513",
-            image: "https://images.unsplash.com/photo-1600320254374-ce2d293c324e?w=400",
-            status: "pending", submittedAt: "2026-06-13", plan: "4months", planPrice: 480, paid: false, expiresAt: null
-          },
-          {
-            id: "seed-014", title: "Deep Cleaning & Carpet Shampooing", category: "Cleaning",
-            location: "Seshego",
-            description: "Steam cleaning for carpets, upholstery, mattresses. Pet stain specialist. Dries within 4 hours. – R550",
-            sellerName: "SteamClean Experts", sellerPhone: "082 123 4514",
-            image: "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400",
-            status: "pending", submittedAt: "2026-06-14", plan: "4months", planPrice: 480, paid: false, expiresAt: null
-          },
-          {
-            id: "seed-015", title: "Pool Maintenance & Chemical Balancing", category: "Home & Garden",
-            location: "Bendor, Polokwane",
-            description: "Weekly pool cleaning, pH balancing, equipment repairs. Full chemical kit with first service. – R650 / month",
-            sellerName: "ClearWater Pools", sellerPhone: "082 123 4515",
-            image: "https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=400",
-            status: "pending", submittedAt: "2026-06-15", plan: "4months", planPrice: 480, paid: false, expiresAt: null
-          },
-          {
-            id: "seed-016", title: "Plastering & Ceiling Installation", category: "Home & Garden",
-            location: "Mankweng, Polokwane",
-            description: "Interior/exterior plastering, ceiling boards, cornice fitting. Quality finish guaranteed. – From R800",
-            sellerName: "SmoothFinish Plasterers", sellerPhone: "082 123 4516",
-            image: "https://images.unsplash.com/photo-1581092335871-4bfa5c6da3e8?w=400",
-            status: "pending", submittedAt: "2026-06-16", plan: "4months", planPrice: 480, paid: false, expiresAt: null
-          },
-          {
-            id: "seed-017", title: "Mobile Car Wash & Detailing", category: "Cleaning",
-            location: "Polokwane – all areas",
-            description: "We come to you! Full exterior wash, wax, vacuum, leather conditioning, engine bay clean. – From R250",
-            sellerName: "ShineMobile Wash", sellerPhone: "082 123 4517",
-            image: "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=400",
-            status: "pending", submittedAt: "2026-06-17", plan: "4months", planPrice: 480, paid: false, expiresAt: null
-          },
-          {
-            id: "seed-018", title: "Event Decor & Tent Hire", category: "Other",
-            location: "Polokwane & surrounds",
-            description: "Weddings, birthdays, corporate décor. Gazebos, tables, chairs, linens, lighting. Setup included. – From R1 200",
-            sellerName: "Celebration Décor Hire", sellerPhone: "082 123 4518",
-            image: "https://images.unsplash.com/photo-1519741497674-611481863552?w=400",
-            status: "pending", submittedAt: "2026-06-18", plan: "4months", planPrice: 480, paid: false, expiresAt: null
-          }
-        ];
+        // Data is now fetched from data.json on GitHub instead of localStorage
+        var DATA_URL = 'https://raw.githubusercontent.com/samellr/trustedpros/main/data.json';
+        var ISSUES_API_URL = 'https://api.github.com/repos/samellr/trustedpros/issues';
 
-        var STORAGE_KEY = 'trustedpros_services';
+        var allServices = [];
+        var currentFilter = 'all';
+        var currentSearch = '';
 
-        function loadServices() {
-          var stored = localStorage.getItem(STORAGE_KEY);
-          if (stored) {
-            try { return JSON.parse(stored); }
-            catch (e) { return seedData(); }
-          }
-          return seedData();
-        }
-
-        function seedData() {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(SEED_SERVICES));
-          return SEED_SERVICES;
-        }
-
-        function saveServices(services) {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(services));
-        }
-
-        function generateId() {
-          return Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
+        // Fetch services from data.json
+        function loadServices(callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', DATA_URL, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        allServices = JSON.parse(xhr.responseText);
+                    } catch (e) {
+                        allServices = [];
+                    }
+                } else {
+                    allServices = [];
+                }
+                callback();
+            };
+            xhr.onerror = function() {
+                allServices = [];
+                callback();
+            };
+            xhr.send();
         }
 
         // ========== APP LOGIC ==========
@@ -1027,162 +874,159 @@
         var postForm = document.getElementById('postForm');
         var contactServiceId = document.getElementById('contactServiceId');
 
-        var allServices = loadServices();
-        var currentFilter = 'all';
-        var currentSearch = '';
-
         // ---- Validation helpers ----
         function isValidPhone(phone) {
-          var cleaned = phone.replace(/[\s\-\(\)\+]/g, '');
-          if (cleaned.slice(0,1) === '0' && cleaned.length === 10 && /^\d+$/.test(cleaned)) return true;
-          if (cleaned.slice(0,3) === '+27' && cleaned.length === 12 && /^\+\d+$/.test(cleaned)) return true;
-          return false;
+            var cleaned = phone.replace(/[\s\-\(\)\+]/g, '');
+            if (cleaned.slice(0,1) === '0' && cleaned.length === 10 && /^\d+$/.test(cleaned)) return true;
+            if (cleaned.slice(0,3) === '+27' && cleaned.length === 12 && /^\+\d+$/.test(cleaned)) return true;
+            return false;
         }
         function isValidEmail(email) {
-          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
         function containsLetter(str) {
-          return /[a-zA-Z]/.test(str);
+            return /[a-zA-Z]/.test(str);
         }
         function containsPrice(str) {
-          return /R\s?\d/.test(str);
+            return /R\s?\d/.test(str);
         }
 
         function validateServiceForm(data) {
-          var errors = [];
-          if (!data.title || data.title.trim().length < 5) errors.push('Title must be at least 5 characters.');
-          var categories = ['Home & Garden','Beauty','Logistics','Cleaning','Other'];
-          if (!data.category || categories.indexOf(data.category) === -1) errors.push('Select a valid category.');
-          if (!data.location || data.location.trim().length < 3) errors.push('Location is required (e.g. Polokwane CBD).');
-          if (!data.description || data.description.trim().length < 20) errors.push('Description must be at least 20 characters.');
-          if (data.description && !containsPrice(data.description)) errors.push('Please include your price in the description (e.g. "... – R500").');
-          if (!data.sellerName || !containsLetter(data.sellerName.trim())) errors.push('Name must contain letters, not just numbers.');
-          if (!data.sellerPhone || !isValidPhone(data.sellerPhone)) errors.push('Enter a valid SA phone number (e.g. 082 123 4567).');
-          if (data.image && !/^https?:\/\/.+/i.test(data.image.trim())) errors.push('Image must be a valid URL starting with http.');
-          return errors;
+            var errors = [];
+            if (!data.title || data.title.trim().length < 5) errors.push('Title must be at least 5 characters.');
+            var categories = ['Home & Garden','Beauty','Logistics','Cleaning','Other'];
+            if (!data.category || categories.indexOf(data.category) === -1) errors.push('Select a valid category.');
+            if (!data.location || data.location.trim().length < 3) errors.push('Location is required (e.g. Polokwane CBD).');
+            if (!data.description || data.description.trim().length < 20) errors.push('Description must be at least 20 characters.');
+            if (data.description && !containsPrice(data.description)) errors.push('Please include your price in the description (e.g. "... – R500").');
+            if (!data.sellerName || !containsLetter(data.sellerName.trim())) errors.push('Name must contain letters, not just numbers.');
+            if (!data.sellerPhone || !isValidPhone(data.sellerPhone)) errors.push('Enter a valid SA phone number (e.g. 082 123 4567).');
+            if (data.image && !/^https?:\/\/.+/i.test(data.image.trim())) errors.push('Image must be a valid URL starting with http.');
+            return errors;
         }
 
         function validateContactForm(data) {
-          var errors = [];
-          if (!data.name || !containsLetter(data.name.trim())) errors.push('Name must contain letters.');
-          if (!data.email || !isValidEmail(data.email)) errors.push('Enter a valid email address.');
-          if (!data.phone || !isValidPhone(data.phone)) errors.push('Enter a valid SA phone number.');
-          if (!data.message || data.message.trim().length < 10) errors.push('Message must be at least 10 characters.');
-          return errors;
+            var errors = [];
+            if (!data.name || !containsLetter(data.name.trim())) errors.push('Name must contain letters.');
+            if (!data.email || !isValidEmail(data.email)) errors.push('Enter a valid email address.');
+            if (!data.phone || !isValidPhone(data.phone)) errors.push('Enter a valid SA phone number.');
+            if (!data.message || data.message.trim().length < 10) errors.push('Message must be at least 10 characters.');
+            return errors;
         }
 
         // ---- Rendering ----
         function renderServices(services) {
-          var filtered = services;
-          if (currentFilter !== 'all') {
-            filtered = filtered.filter(function(s) { return s.category === currentFilter; });
-          }
-          if (currentSearch.trim() !== '') {
-            var q = currentSearch.trim().toLowerCase();
+            var filtered = services;
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(function(s) { return s.category === currentFilter; });
+            }
+            if (currentSearch.trim() !== '') {
+                var q = currentSearch.trim().toLowerCase();
+                filtered = filtered.filter(function(s) {
+                    return s.title.toLowerCase().indexOf(q) !== -1 ||
+                           s.description.toLowerCase().indexOf(q) !== -1 ||
+                           s.sellerName.toLowerCase().indexOf(q) !== -1;
+                });
+            }
+            // Only show approved, paid, non-expired
             filtered = filtered.filter(function(s) {
-              return s.title.toLowerCase().indexOf(q) !== -1 ||
-                     s.description.toLowerCase().indexOf(q) !== -1 ||
-                     s.sellerName.toLowerCase().indexOf(q) !== -1;
+                if (s.status !== 'approved') return false;
+                if (!s.paid) return false;
+                if (s.expiresAt && new Date(s.expiresAt) < new Date()) return false;
+                return true;
             });
-          }
-          filtered = filtered.filter(function(s) {
-            if (s.status !== 'approved') return false;
-            if (!s.paid) return false;
-            if (s.expiresAt && new Date(s.expiresAt) < new Date()) return false;
-            return true;
-          });
 
-          if (filtered.length === 0) {
-            servicesGrid.innerHTML = '<div class="empty-state"><p>No services match your criteria.</p><p style="font-size:0.9rem;color:var(--text-muted);">Try adjusting the filter or check back later.</p></div>';
-            return;
-          }
+            if (filtered.length === 0) {
+                servicesGrid.innerHTML = '<div class="empty-state"><p>No services match your criteria.</p><p style="font-size:0.9rem;color:var(--text-muted);">Try adjusting the filter or check back later.</p></div>';
+                return;
+            }
 
-          var html = '';
-          filtered.forEach(function(service) {
-            var desc = service.description.length > 90 ? service.description.substring(0, 90) + '…' : service.description;
-            html += '<div class="service-card" data-id="' + service.id + '">' +
-              '<div class="card-image">' +
-              '<img src="' + (service.image || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&auto=format&fit=crop') + '" alt="' + service.title + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&auto=format&fit=crop\'">' +
-              '<span class="card-category">' + service.category + '</span>' +
-              '</div>' +
-              '<div class="card-body">' +
-              '<h3>' + service.title + '</h3>' +
-              '<div class="card-meta"><span class="card-location">📍 ' + service.location + '</span></div>' +
-              '<p class="card-description">' + desc + '</p>' +
-              '<div class="card-footer"><span class="card-seller">' + service.sellerName + '</span>' +
-              '<button class="btn-contact" data-id="' + service.id + '">Request Contact</button></div>' +
-              '</div></div>';
-          });
-          servicesGrid.innerHTML = html;
-
-          var contactButtons = servicesGrid.querySelectorAll('.btn-contact');
-          for (var i = 0; i < contactButtons.length; i++) {
-            contactButtons[i].addEventListener('click', function(e) {
-              e.stopPropagation();
-              openContactModal(this.getAttribute('data-id'));
+            var html = '';
+            filtered.forEach(function(service) {
+                var desc = service.description.length > 90 ? service.description.substring(0, 90) + '…' : service.description;
+                html += '<div class="service-card" data-id="' + service.id + '">' +
+                    '<div class="card-image">' +
+                    '<img src="' + (service.image || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&auto=format&fit=crop') + '" alt="' + service.title + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&auto=format&fit=crop\'">' +
+                    '<span class="card-category">' + service.category + '</span>' +
+                    '</div>' +
+                    '<div class="card-body">' +
+                    '<h3>' + service.title + '</h3>' +
+                    '<div class="card-meta"><span class="card-location">📍 ' + service.location + '</span></div>' +
+                    '<p class="card-description">' + desc + '</p>' +
+                    '<div class="card-footer"><span class="card-seller">' + service.sellerName + '</span>' +
+                    '<button class="btn-contact" data-id="' + service.id + '">Request Contact</button></div>' +
+                    '</div></div>';
             });
-          }
+            servicesGrid.innerHTML = html;
+
+            var contactButtons = servicesGrid.querySelectorAll('.btn-contact');
+            for (var i = 0; i < contactButtons.length; i++) {
+                contactButtons[i].addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    openContactModal(this.getAttribute('data-id'));
+                });
+            }
         }
 
         function initCategoryPills() {
-          var pills = categoryPillsContainer.querySelectorAll('.pill');
-          for (var i = 0; i < pills.length; i++) {
-            pills[i].addEventListener('click', function() {
-              for (var j = 0; j < pills.length; j++) pills[j].classList.remove('active');
-              this.classList.add('active');
-              currentFilter = this.getAttribute('data-cat');
-              renderServices(allServices);
-            });
-          }
+            var pills = categoryPillsContainer.querySelectorAll('.pill');
+            for (var i = 0; i < pills.length; i++) {
+                pills[i].addEventListener('click', function() {
+                    for (var j = 0; j < pills.length; j++) pills[j].classList.remove('active');
+                    this.classList.add('active');
+                    currentFilter = this.getAttribute('data-cat');
+                    renderServices(allServices);
+                });
+            }
         }
 
         function addSearchBar() {
-          var header = document.querySelector('.listings-header');
-          if (!header) return;
-          var searchWrapper = document.createElement('div');
-          searchWrapper.className = 'search-wrapper';
-          searchWrapper.innerHTML = '<input type="text" id="searchInput" placeholder="Search services, sellers, or keywords…" aria-label="Search services">';
-          header.appendChild(searchWrapper);
-          document.getElementById('searchInput').addEventListener('input', function() {
-            currentSearch = this.value;
-            renderServices(allServices);
-          });
+            var header = document.querySelector('.listings-header');
+            if (!header) return;
+            var searchWrapper = document.createElement('div');
+            searchWrapper.className = 'search-wrapper';
+            searchWrapper.innerHTML = '<input type="text" id="searchInput" placeholder="Search services, sellers, or keywords…" aria-label="Search services">';
+            header.appendChild(searchWrapper);
+            document.getElementById('searchInput').addEventListener('input', function() {
+                currentSearch = this.value;
+                renderServices(allServices);
+            });
         }
 
         // ---- Modals ----
         function openContactModal(serviceId) {
-          contactServiceId.value = serviceId;
-          contactModal.classList.add('active');
-          document.body.style.overflow = 'hidden';
+            contactServiceId.value = serviceId;
+            contactModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeContactModalFn() {
-          contactModal.classList.remove('active');
-          document.body.style.overflow = '';
-          contactForm.reset();
+            contactModal.classList.remove('active');
+            document.body.style.overflow = '';
+            contactForm.reset();
         }
 
         function openPostModal() {
-          postModal.classList.add('active');
-          document.body.style.overflow = 'hidden';
-          setTimeout(function() {
-            var radios = document.querySelectorAll('.plan-card input[type="radio"]');
-            for (var i = 0; i < radios.length; i++) {
-              radios[i].addEventListener('change', function() {
-                var allCards = document.querySelectorAll('.plan-card');
-                for (var j = 0; j < allCards.length; j++) allCards[j].classList.remove('selected');
-                this.parentNode.classList.add('selected');
-              });
-            }
-          }, 100);
+            postModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            setTimeout(function() {
+                var radios = document.querySelectorAll('.plan-card input[type="radio"]');
+                for (var i = 0; i < radios.length; i++) {
+                    radios[i].addEventListener('change', function() {
+                        var allCards = document.querySelectorAll('.plan-card');
+                        for (var j = 0; j < allCards.length; j++) allCards[j].classList.remove('selected');
+                        this.parentNode.classList.add('selected');
+                    });
+                }
+            }, 100);
         }
 
         function closePostModalFn() {
-          postModal.classList.remove('active');
-          document.body.style.overflow = '';
-          postForm.reset();
-          var cards = document.querySelectorAll('.plan-card');
-          for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
+            postModal.classList.remove('active');
+            document.body.style.overflow = '';
+            postForm.reset();
+            var cards = document.querySelectorAll('.plan-card');
+            for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
         }
 
         closeContactBtn.addEventListener('click', closeContactModalFn);
@@ -1191,152 +1035,152 @@
         postModal.addEventListener('click', function(e) { if (e.target === postModal) closePostModalFn(); });
 
         for (var b = 0; b < openPostBtns.length; b++) {
-          openPostBtns[b].addEventListener('click', function(e) {
-            e.preventDefault();
-            openPostModal();
-          });
+            openPostBtns[b].addEventListener('click', function(e) {
+                e.preventDefault();
+                openPostModal();
+            });
         }
 
         // ---- Form submissions ----
         contactForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          var name = document.getElementById('contactName').value.trim();
-          var email = document.getElementById('contactEmail').value.trim();
-          var phone = document.getElementById('contactPhone').value.trim();
-          var message = document.getElementById('contactMessage').value.trim();
-          var errors = validateContactForm({ name: name, email: email, phone: phone, message: message });
-          if (errors.length > 0) {
-            alert('Please fix the following:\n- ' + errors.join('\n- '));
-            return;
-          }
-          var serviceId = contactServiceId.value;
-          var service = allServices.find(function(s) { return s.id === serviceId; });
-          var inquiry = {
-            id: generateId(),
-            serviceId: serviceId,
-            serviceTitle: service ? service.title : 'Unknown',
-            sellerName: service ? service.sellerName : 'Unknown',
-            name: name,
-            email: email,
-            phone: phone,
-            message: message,
-            submittedAt: new Date().toISOString()
-          };
-          var inquiries = JSON.parse(localStorage.getItem('trustedpros_inquiries') || '[]');
-          inquiries.push(inquiry);
-          localStorage.setItem('trustedpros_inquiries', JSON.stringify(inquiries));
-          alert('✅ Your request has been sent securely. The admin will connect you with the professional shortly.');
-          closeContactModalFn();
+            e.preventDefault();
+            var name = document.getElementById('contactName').value.trim();
+            var email = document.getElementById('contactEmail').value.trim();
+            var phone = document.getElementById('contactPhone').value.trim();
+            var message = document.getElementById('contactMessage').value.trim();
+            var errors = validateContactForm({ name: name, email: email, phone: phone, message: message });
+            if (errors.length > 0) {
+                alert('Please fix the following:\n- ' + errors.join('\n- '));
+                return;
+            }
+            var serviceId = contactServiceId.value;
+            var service = allServices.find(function(s) { return s.id === serviceId; });
+
+            // Send inquiry as a GitHub Issue
+            var issueBody = '**New Contact Inquiry**\n\n' +
+                '**From:** ' + name + '\n' +
+                '**Email:** ' + email + '\n' +
+                '**Phone:** ' + phone + '\n' +
+                '**Service:** ' + (service ? service.title : 'Unknown') + '\n' +
+                '**Seller:** ' + (service ? service.sellerName : 'Unknown') + '\n\n' +
+                '**Message:**\n' + message;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', ISSUES_API_URL, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+            xhr.onload = function() {
+                if (xhr.status === 201) {
+                    alert('✅ Your request has been sent securely. The admin will connect you shortly.');
+                } else {
+                    alert('⚠️ There was a problem sending your request. Please try again later.');
+                }
+                closeContactModalFn();
+            };
+            xhr.onerror = function() {
+                alert('⚠️ Network error. Please check your connection.');
+                closeContactModalFn();
+            };
+            xhr.send(JSON.stringify({
+                title: '📩 Inquiry from ' + name + ' about ' + (service ? service.title : 'Unknown'),
+                body: issueBody,
+                labels: ['inquiry']
+            }));
         });
 
         postForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          var title = document.getElementById('postTitle').value.trim();
-          var category = document.getElementById('postCategory').value;
-          var location = document.getElementById('postLocation').value.trim();
-          var sellerName = document.getElementById('postSeller').value.trim();
-          var sellerPhone = document.getElementById('postPhone').value.trim();
-          var image = document.getElementById('postImage').value.trim();
-          var description = document.getElementById('postDescription').value.trim();
-          var selectedPlan = document.querySelector('input[name="plan"]:checked');
-          if (!selectedPlan) {
-            alert('Please select a listing plan.');
-            return;
-          }
-          var planValue = selectedPlan.value;
-          var planPrices = { '1month': 150, '2months': 280, '3months': 390, '4months': 480 };
+            e.preventDefault();
+            var title = document.getElementById('postTitle').value.trim();
+            var category = document.getElementById('postCategory').value;
+            var location = document.getElementById('postLocation').value.trim();
+            var sellerName = document.getElementById('postSeller').value.trim();
+            var sellerPhone = document.getElementById('postPhone').value.trim();
+            var image = document.getElementById('postImage').value.trim();
+            var description = document.getElementById('postDescription').value.trim();
+            var selectedPlan = document.querySelector('input[name="plan"]:checked');
+            if (!selectedPlan) {
+                alert('Please select a listing plan.');
+                return;
+            }
+            var planValue = selectedPlan.value;
+            var planPrices = { '1month': 150, '2months': 280, '3months': 390, '4months': 480 };
 
-          var errors = validateServiceForm({
-            title: title, category: category, location: location, description: description,
-            sellerName: sellerName, sellerPhone: sellerPhone, image: image, plan: planValue
-          });
-          if (errors.length > 0) {
-            alert('Please fix the following:\n- ' + errors.join('\n- '));
-            return;
-          }
+            var errors = validateServiceForm({
+                title: title, category: category, location: location, description: description,
+                sellerName: sellerName, sellerPhone: sellerPhone, image: image, plan: planValue
+            });
+            if (errors.length > 0) {
+                alert('Please fix the following:\n- ' + errors.join('\n- '));
+                return;
+            }
 
-          var newService = {
-            id: generateId(),
-            title: title,
-            category: category,
-            location: location,
-            description: description,
-            sellerName: sellerName,
-            sellerPhone: sellerPhone,
-            image: image || (selectedImages.length > 0 ? selectedImages[0] : ''),
-images: selectedImages,  // store all picked images
-            status: 'pending',
-            submittedAt: new Date().toISOString(),
-            plan: planValue,
-            planPrice: planPrices[planValue],
-            paid: false,
-            expiresAt: null
-          };
-          allServices.push(newService);
-          saveServices(allServices);
-          alert('✅ Your service has been submitted for admin review. You will be notified once approved.');
-          closePostModalFn();
+            // Create new service object
+            var newService = {
+                id: 'sub-' + Date.now().toString(36),
+                title: title,
+                category: category,
+                location: location,
+                description: description,
+                sellerName: sellerName,
+                sellerPhone: sellerPhone,
+                image: image || '',
+                status: 'pending',
+                submittedAt: new Date().toISOString(),
+                plan: planValue,
+                planPrice: planPrices[planValue],
+                paid: false,
+                expiresAt: null
+            };
+
+            // Send as a GitHub Issue
+            var issueBody = '**New Listing Submission**\n\n' +
+                '```json\n' + JSON.stringify(newService, null, 2) + '\n```\n\n' +
+                '**To approve:** Copy the JSON above, add it to `data.json`, change `status` to `"approved"`, set `paid` to `true`, and optionally set `expiresAt`.';
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', ISSUES_API_URL, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+            xhr.onload = function() {
+                if (xhr.status === 201) {
+                    alert('✅ Your service has been submitted for admin review. You will be notified once approved.');
+                } else {
+                    alert('⚠️ There was a problem submitting. Please try again later.');
+                }
+                closePostModalFn();
+            };
+            xhr.onerror = function() {
+                alert('⚠️ Network error. Please check your connection.');
+                closePostModalFn();
+            };
+            xhr.send(JSON.stringify({
+                title: '📝 New Listing: ' + title + ' (' + category + ')',
+                body: issueBody,
+                labels: ['submission', 'pending']
+            }));
         });
 
         // ---- Mobile menu ----
         document.getElementById('hamburgerBtn').addEventListener('click', function() {
-          var nav = document.querySelector('.main-nav');
-          nav.classList.toggle('open');
+            var nav = document.querySelector('.main-nav');
+            nav.classList.toggle('open');
         });
         var navLinks = document.querySelectorAll('.main-nav a');
         for (var k = 0; k < navLinks.length; k++) {
-          navLinks[k].addEventListener('click', function() {
-            document.querySelector('.main-nav').classList.remove('open');
-          });
+            navLinks[k].addEventListener('click', function() {
+                document.querySelector('.main-nav').classList.remove('open');
+            });
         }
 
         function init() {
-          addSearchBar();
-          initCategoryPills();
-          renderServices(allServices);
+            loadServices(function() {
+                addSearchBar();
+                initCategoryPills();
+                renderServices(allServices);
+            });
         }
 
         document.addEventListener('DOMContentLoaded', init);
-        
-        var selectedImages = [];
-
-document.getElementById('postImages').addEventListener('change', function(e) {
-    var files = e.target.files;
-    if (files.length > 2) {
-        alert('You can only upload a maximum of 2 images.');
-        this.value = '';
-        return;
-    }
-    selectedImages = [];
-    document.getElementById('imagePreview').innerHTML = '';
-    for (var i = 0; i < files.length; i++) {
-        (function(file) {
-            var reader = new FileReader();
-            reader.onload = function(ev) {
-                // Compress image using canvas
-                var img = new Image();
-                img.onload = function() {
-                    var canvas = document.createElement('canvas');
-                    var maxW = 400;
-                    var scale = maxW / img.width;
-                    canvas.width = maxW;
-                    canvas.height = img.height * scale;
-                    var ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    var compressed = canvas.toDataURL('image/jpeg', 0.6);
-                    selectedImages.push(compressed);
-                    var preview = document.createElement('img');
-                    preview.src = compressed;
-                    preview.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:6px;';
-                    document.getElementById('imagePreview').appendChild(preview);
-                };
-                img.src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-        })(files[i]);
-    }
-});
-        
     </script>
 </body>
-</html>
+    </html>
