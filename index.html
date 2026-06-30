@@ -765,6 +765,13 @@
                     <label for="postImage">Image URL (optional)</label>
                     <input type="url" id="postImage" placeholder="https://example.com/photo.jpg">
                 </div>
+                <!-- FILE PICKER -->
+                <div class="form-group">
+                    <label for="postImages">Or upload from device (max 2)</label>
+                    <input type="file" id="postImages" accept="image/*" multiple style="padding:8px;">
+                    <small style="color:var(--text-muted);">Photos will be compressed. You can also paste a URL above.</small>
+                    <div id="imagePreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
+                </div>
                 <div class="form-group">
                     <label for="postDescription">Full description (include your price) *</label>
                     <textarea id="postDescription" rows="5" placeholder="Describe your service, experience, and include your price (e.g. '... – R1200 per job')" required minlength="20"></textarea>
@@ -830,8 +837,6 @@
     </footer>
 
     <script>
-        // ========== DATA LAYER ==========
-        // Data is now fetched from data.json on GitHub instead of localStorage
         var DATA_URL = 'https://raw.githubusercontent.com/samellr/trustedpros/main/data.json';
         var ISSUES_API_URL = 'https://api.github.com/repos/samellr/trustedpros/issues';
 
@@ -839,30 +844,20 @@
         var currentFilter = 'all';
         var currentSearch = '';
 
-        // Fetch services from data.json
         function loadServices(callback) {
             var xhr = new XMLHttpRequest();
             xhr.open('GET', DATA_URL, true);
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    try {
-                        allServices = JSON.parse(xhr.responseText);
-                    } catch (e) {
-                        allServices = [];
-                    }
-                } else {
-                    allServices = [];
-                }
+                    try { allServices = JSON.parse(xhr.responseText); }
+                    catch (e) { allServices = []; }
+                } else { allServices = []; }
                 callback();
             };
-            xhr.onerror = function() {
-                allServices = [];
-                callback();
-            };
+            xhr.onerror = function() { allServices = []; callback(); };
             xhr.send();
         }
 
-        // ========== APP LOGIC ==========
         var servicesGrid = document.getElementById('servicesGrid');
         var categoryPillsContainer = document.getElementById('categoryPills');
         var contactModal = document.getElementById('contactModal');
@@ -873,38 +868,31 @@
         var contactForm = document.getElementById('contactForm');
         var postForm = document.getElementById('postForm');
         var contactServiceId = document.getElementById('contactServiceId');
+        var selectedImages = [];
 
-        // ---- Validation helpers ----
         function isValidPhone(phone) {
             var cleaned = phone.replace(/[\s\-\(\)\+]/g, '');
             if (cleaned.slice(0,1) === '0' && cleaned.length === 10 && /^\d+$/.test(cleaned)) return true;
             if (cleaned.slice(0,3) === '+27' && cleaned.length === 12 && /^\+\d+$/.test(cleaned)) return true;
             return false;
         }
-        function isValidEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-        function containsLetter(str) {
-            return /[a-zA-Z]/.test(str);
-        }
-        function containsPrice(str) {
-            return /R\s?\d/.test(str);
-        }
+        function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+        function containsLetter(str) { return /[a-zA-Z]/.test(str); }
+        function containsPrice(str) { return /R\s?\d/.test(str); }
 
         function validateServiceForm(data) {
             var errors = [];
             if (!data.title || data.title.trim().length < 5) errors.push('Title must be at least 5 characters.');
             var categories = ['Home & Garden','Beauty','Logistics','Cleaning','Other'];
             if (!data.category || categories.indexOf(data.category) === -1) errors.push('Select a valid category.');
-            if (!data.location || data.location.trim().length < 3) errors.push('Location is required (e.g. Polokwane CBD).');
+            if (!data.location || data.location.trim().length < 3) errors.push('Location is required.');
             if (!data.description || data.description.trim().length < 20) errors.push('Description must be at least 20 characters.');
-            if (data.description && !containsPrice(data.description)) errors.push('Please include your price in the description (e.g. "... – R500").');
-            if (!data.sellerName || !containsLetter(data.sellerName.trim())) errors.push('Name must contain letters, not just numbers.');
-            if (!data.sellerPhone || !isValidPhone(data.sellerPhone)) errors.push('Enter a valid SA phone number (e.g. 082 123 4567).');
-            if (data.image && !/^https?:\/\/.+/i.test(data.image.trim())) errors.push('Image must be a valid URL starting with http.');
+            if (data.description && !containsPrice(data.description)) errors.push('Include your price in the description (e.g. "... – R500").');
+            if (!data.sellerName || !containsLetter(data.sellerName.trim())) errors.push('Name must contain letters.');
+            if (!data.sellerPhone || !isValidPhone(data.sellerPhone)) errors.push('Enter a valid SA phone number.');
+            if (data.image && !/^https?:\/\/.+/i.test(data.image.trim())) errors.push('Image URL must start with http.');
             return errors;
         }
-
         function validateContactForm(data) {
             var errors = [];
             if (!data.name || !containsLetter(data.name.trim())) errors.push('Name must contain letters.');
@@ -914,51 +902,38 @@
             return errors;
         }
 
-        // ---- Rendering ----
         function renderServices(services) {
             var filtered = services;
-            if (currentFilter !== 'all') {
-                filtered = filtered.filter(function(s) { return s.category === currentFilter; });
-            }
+            if (currentFilter !== 'all') filtered = filtered.filter(function(s) { return s.category === currentFilter; });
             if (currentSearch.trim() !== '') {
                 var q = currentSearch.trim().toLowerCase();
                 filtered = filtered.filter(function(s) {
-                    return s.title.toLowerCase().indexOf(q) !== -1 ||
-                           s.description.toLowerCase().indexOf(q) !== -1 ||
-                           s.sellerName.toLowerCase().indexOf(q) !== -1;
+                    return s.title.toLowerCase().indexOf(q) !== -1 || s.description.toLowerCase().indexOf(q) !== -1 || s.sellerName.toLowerCase().indexOf(q) !== -1;
                 });
             }
-            // Only show approved, paid, non-expired
             filtered = filtered.filter(function(s) {
                 if (s.status !== 'approved') return false;
                 if (!s.paid) return false;
                 if (s.expiresAt && new Date(s.expiresAt) < new Date()) return false;
                 return true;
             });
-
             if (filtered.length === 0) {
-                servicesGrid.innerHTML = '<div class="empty-state"><p>No services match your criteria.</p><p style="font-size:0.9rem;color:var(--text-muted);">Try adjusting the filter or check back later.</p></div>';
+                servicesGrid.innerHTML = '<div class="empty-state"><p>No services found.</p></div>';
                 return;
             }
-
             var html = '';
             filtered.forEach(function(service) {
                 var desc = service.description.length > 90 ? service.description.substring(0, 90) + '…' : service.description;
                 html += '<div class="service-card" data-id="' + service.id + '">' +
-                    '<div class="card-image">' +
-                    '<img src="' + (service.image || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&auto=format&fit=crop') + '" alt="' + service.title + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&auto=format&fit=crop\'">' +
-                    '<span class="card-category">' + service.category + '</span>' +
-                    '</div>' +
-                    '<div class="card-body">' +
-                    '<h3>' + service.title + '</h3>' +
+                    '<div class="card-image"><img src="' + (service.image || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400') + '" alt="' + service.title + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400\'">' +
+                    '<span class="card-category">' + service.category + '</span></div>' +
+                    '<div class="card-body"><h3>' + service.title + '</h3>' +
                     '<div class="card-meta"><span class="card-location">📍 ' + service.location + '</span></div>' +
                     '<p class="card-description">' + desc + '</p>' +
                     '<div class="card-footer"><span class="card-seller">' + service.sellerName + '</span>' +
-                    '<button class="btn-contact" data-id="' + service.id + '">Request Contact</button></div>' +
-                    '</div></div>';
+                    '<button class="btn-contact" data-id="' + service.id + '">Request Contact</button></div></div></div>';
             });
             servicesGrid.innerHTML = html;
-
             var contactButtons = servicesGrid.querySelectorAll('.btn-contact');
             for (var i = 0; i < contactButtons.length; i++) {
                 contactButtons[i].addEventListener('click', function(e) {
@@ -985,7 +960,7 @@
             if (!header) return;
             var searchWrapper = document.createElement('div');
             searchWrapper.className = 'search-wrapper';
-            searchWrapper.innerHTML = '<input type="text" id="searchInput" placeholder="Search services, sellers, or keywords…" aria-label="Search services">';
+            searchWrapper.innerHTML = '<input type="text" id="searchInput" placeholder="Search services…" aria-label="Search">';
             header.appendChild(searchWrapper);
             document.getElementById('searchInput').addEventListener('input', function() {
                 currentSearch = this.value;
@@ -993,19 +968,16 @@
             });
         }
 
-        // ---- Modals ----
         function openContactModal(serviceId) {
             contactServiceId.value = serviceId;
             contactModal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-
         function closeContactModalFn() {
             contactModal.classList.remove('active');
             document.body.style.overflow = '';
             contactForm.reset();
         }
-
         function openPostModal() {
             postModal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1013,18 +985,19 @@
                 var radios = document.querySelectorAll('.plan-card input[type="radio"]');
                 for (var i = 0; i < radios.length; i++) {
                     radios[i].addEventListener('change', function() {
-                        var allCards = document.querySelectorAll('.plan-card');
-                        for (var j = 0; j < allCards.length; j++) allCards[j].classList.remove('selected');
+                        var cards = document.querySelectorAll('.plan-card');
+                        for (var j = 0; j < cards.length; j++) cards[j].classList.remove('selected');
                         this.parentNode.classList.add('selected');
                     });
                 }
             }, 100);
         }
-
         function closePostModalFn() {
             postModal.classList.remove('active');
             document.body.style.overflow = '';
             postForm.reset();
+            selectedImages = [];
+            document.getElementById('imagePreview').innerHTML = '';
             var cards = document.querySelectorAll('.plan-card');
             for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
         }
@@ -1033,15 +1006,43 @@
         closePostBtn.addEventListener('click', closePostModalFn);
         contactModal.addEventListener('click', function(e) { if (e.target === contactModal) closeContactModalFn(); });
         postModal.addEventListener('click', function(e) { if (e.target === postModal) closePostModalFn(); });
-
         for (var b = 0; b < openPostBtns.length; b++) {
-            openPostBtns[b].addEventListener('click', function(e) {
-                e.preventDefault();
-                openPostModal();
-            });
+            openPostBtns[b].addEventListener('click', function(e) { e.preventDefault(); openPostModal(); });
         }
 
-        // ---- Form submissions ----
+        // File picker
+        document.getElementById('postImages').addEventListener('change', function(e) {
+            var files = e.target.files;
+            if (files.length > 2) { alert('Max 2 images.'); this.value = ''; return; }
+            selectedImages = [];
+            document.getElementById('imagePreview').innerHTML = '';
+            for (var i = 0; i < files.length; i++) {
+                (function(file) {
+                    var reader = new FileReader();
+                    reader.onload = function(ev) {
+                        var img = new Image();
+                        img.onload = function() {
+                            var canvas = document.createElement('canvas');
+                            var maxW = 400;
+                            var scale = maxW / img.width;
+                            canvas.width = maxW;
+                            canvas.height = img.height * scale;
+                            var ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                            var compressed = canvas.toDataURL('image/jpeg', 0.6);
+                            selectedImages.push(compressed);
+                            var preview = document.createElement('img');
+                            preview.src = compressed;
+                            preview.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:6px;';
+                            document.getElementById('imagePreview').appendChild(preview);
+                        };
+                        img.src = ev.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                })(files[i]);
+            }
+        });
+
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             var name = document.getElementById('contactName').value.trim();
@@ -1049,43 +1050,17 @@
             var phone = document.getElementById('contactPhone').value.trim();
             var message = document.getElementById('contactMessage').value.trim();
             var errors = validateContactForm({ name: name, email: email, phone: phone, message: message });
-            if (errors.length > 0) {
-                alert('Please fix the following:\n- ' + errors.join('\n- '));
-                return;
-            }
+            if (errors.length > 0) { alert('Please fix:\n- ' + errors.join('\n- ')); return; }
             var serviceId = contactServiceId.value;
             var service = allServices.find(function(s) { return s.id === serviceId; });
-
-            // Send inquiry as a GitHub Issue
-            var issueBody = '**New Contact Inquiry**\n\n' +
-                '**From:** ' + name + '\n' +
-                '**Email:** ' + email + '\n' +
-                '**Phone:** ' + phone + '\n' +
-                '**Service:** ' + (service ? service.title : 'Unknown') + '\n' +
-                '**Seller:** ' + (service ? service.sellerName : 'Unknown') + '\n\n' +
-                '**Message:**\n' + message;
-
+            var issueBody = '**New Inquiry**\n\n**From:** ' + name + '\n**Email:** ' + email + '\n**Phone:** ' + phone + '\n**Service:** ' + (service ? service.title : 'Unknown') + '\n**Seller:** ' + (service ? service.sellerName : 'Unknown') + '\n\n**Message:**\n' + message;
             var xhr = new XMLHttpRequest();
             xhr.open('POST', ISSUES_API_URL, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
-            xhr.onload = function() {
-                if (xhr.status === 201) {
-                    alert('✅ Your request has been sent securely. The admin will connect you shortly.');
-                } else {
-                    alert('⚠️ There was a problem sending your request. Please try again later.');
-                }
-                closeContactModalFn();
-            };
-            xhr.onerror = function() {
-                alert('⚠️ Network error. Please check your connection.');
-                closeContactModalFn();
-            };
-            xhr.send(JSON.stringify({
-                title: '📩 Inquiry from ' + name + ' about ' + (service ? service.title : 'Unknown'),
-                body: issueBody,
-                labels: ['inquiry']
-            }));
+            xhr.onload = function() { alert(xhr.status === 201 ? '✅ Sent!' : '⚠️ Failed.'); closeContactModalFn(); };
+            xhr.onerror = function() { alert('⚠️ Network error.'); closeContactModalFn(); };
+            xhr.send(JSON.stringify({ title: '📩 Inquiry from ' + name, body: issueBody, labels: ['inquiry'] }));
         });
 
         postForm.addEventListener('submit', function(e) {
@@ -1095,92 +1070,45 @@
             var location = document.getElementById('postLocation').value.trim();
             var sellerName = document.getElementById('postSeller').value.trim();
             var sellerPhone = document.getElementById('postPhone').value.trim();
-            var image = document.getElementById('postImage').value.trim();
+            var imageUrl = document.getElementById('postImage').value.trim();
             var description = document.getElementById('postDescription').value.trim();
             var selectedPlan = document.querySelector('input[name="plan"]:checked');
-            if (!selectedPlan) {
-                alert('Please select a listing plan.');
-                return;
-            }
+            if (!selectedPlan) { alert('Select a plan.'); return; }
             var planValue = selectedPlan.value;
             var planPrices = { '1month': 150, '2months': 280, '3months': 390, '4months': 480 };
-
-            var errors = validateServiceForm({
-                title: title, category: category, location: location, description: description,
-                sellerName: sellerName, sellerPhone: sellerPhone, image: image, plan: planValue
-            });
-            if (errors.length > 0) {
-                alert('Please fix the following:\n- ' + errors.join('\n- '));
-                return;
-            }
-
-            // Create new service object
+            var errors = validateServiceForm({ title: title, category: category, location: location, description: description, sellerName: sellerName, sellerPhone: sellerPhone, image: imageUrl, plan: planValue });
+            if (errors.length > 0) { alert('Please fix:\n- ' + errors.join('\n- ')); return; }
             var newService = {
                 id: 'sub-' + Date.now().toString(36),
-                title: title,
-                category: category,
-                location: location,
-                description: description,
-                sellerName: sellerName,
-                sellerPhone: sellerPhone,
-                image: image || '',
-                status: 'pending',
-                submittedAt: new Date().toISOString(),
-                plan: planValue,
-                planPrice: planPrices[planValue],
-                paid: false,
-                expiresAt: null
+                title: title, category: category, location: location, description: description,
+                sellerName: sellerName, sellerPhone: sellerPhone,
+                image: imageUrl || (selectedImages.length > 0 ? selectedImages[0] : ''),
+                images: selectedImages,
+                status: 'pending', submittedAt: new Date().toISOString(),
+                plan: planValue, planPrice: planPrices[planValue], paid: false, expiresAt: null
             };
-
-            // Send as a GitHub Issue
-            var issueBody = '**New Listing Submission**\n\n' +
-                '```json\n' + JSON.stringify(newService, null, 2) + '\n```\n\n' +
-                '**To approve:** Copy the JSON above, add it to `data.json`, change `status` to `"approved"`, set `paid` to `true`, and optionally set `expiresAt`.';
-
+            var issueBody = '**New Listing Submission**\n\n```json\n' + JSON.stringify(newService, null, 2) + '\n```\n\n**To approve:** Copy JSON above, add to `data.json`, set `status` to `"approved"`, `paid` to `true`.';
             var xhr = new XMLHttpRequest();
             xhr.open('POST', ISSUES_API_URL, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
-            xhr.onload = function() {
-                if (xhr.status === 201) {
-                    alert('✅ Your service has been submitted for admin review. You will be notified once approved.');
-                } else {
-                    alert('⚠️ There was a problem submitting. Please try again later.');
-                }
-                closePostModalFn();
-            };
-            xhr.onerror = function() {
-                alert('⚠️ Network error. Please check your connection.');
-                closePostModalFn();
-            };
-            xhr.send(JSON.stringify({
-                title: '📝 New Listing: ' + title + ' (' + category + ')',
-                body: issueBody,
-                labels: ['submission', 'pending']
-            }));
+            xhr.onload = function() { alert(xhr.status === 201 ? '✅ Submitted!' : '⚠️ Failed.'); closePostModalFn(); };
+            xhr.onerror = function() { alert('⚠️ Network error.'); closePostModalFn(); };
+            xhr.send(JSON.stringify({ title: '📝 New Listing: ' + title, body: issueBody, labels: ['submission', 'pending'] }));
         });
 
-        // ---- Mobile menu ----
         document.getElementById('hamburgerBtn').addEventListener('click', function() {
-            var nav = document.querySelector('.main-nav');
-            nav.classList.toggle('open');
+            document.querySelector('.main-nav').classList.toggle('open');
         });
         var navLinks = document.querySelectorAll('.main-nav a');
         for (var k = 0; k < navLinks.length; k++) {
-            navLinks[k].addEventListener('click', function() {
-                document.querySelector('.main-nav').classList.remove('open');
-            });
+            navLinks[k].addEventListener('click', function() { document.querySelector('.main-nav').classList.remove('open'); });
         }
 
         function init() {
-            loadServices(function() {
-                addSearchBar();
-                initCategoryPills();
-                renderServices(allServices);
-            });
+            loadServices(function() { addSearchBar(); initCategoryPills(); renderServices(allServices); });
         }
-
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
-    </html>
+                    </html>
