@@ -660,7 +660,7 @@
         <div class="modal-box">
             <button class="modal-close" id="closeContactModal">&times;</button>
             <h2>Request contact</h2>
-            <p class="modal-sub">Your details go to the admin. We'll forward your request to the professional.</p>
+            <p class="modal-sub">Fill in your details. We'll connect you with the professional.</p>
             <form id="contactForm" novalidate>
                 <div class="form-group">
                     <label for="contactName">Full name *</label>
@@ -679,9 +679,9 @@
                     <textarea id="contactMessage" rows="4" placeholder="Describe what you need..." required minlength="10"></textarea>
                 </div>
                 <input type="hidden" id="contactServiceId" value="">
-                <button type="submit" class="btn-primary btn-block">Send request securely</button>
+                <button type="submit" class="btn-primary btn-block">Send via WhatsApp</button>
             </form>
-            <p class="modal-footnote">🔒 Your info is only shared with the admin. Sellers never see your contact details directly.</p>
+            <p class="modal-footnote">🔒 Your info is sent directly to the admin via WhatsApp. Sellers never see your contact details.</p>
         </div>
     </div>
 
@@ -713,7 +713,6 @@
 
     <script>
         var DATA_URL = 'https://raw.githubusercontent.com/samellr/trustedpros/main/data.json';
-        var ISSUES_API_URL = 'https://api.github.com/repos/samellr/trustedpros/issues';
 
         var allServices = [];
         var currentFilter = 'all';
@@ -848,14 +847,16 @@
             if (errors.length > 0) { alert('Please fix:\n- ' + errors.join('\n- ')); return; }
             var serviceId = contactServiceId.value;
             var service = allServices.find(function(s) { return s.id === serviceId; });
-            var issueBody = '**New Inquiry**\n\n**From:** ' + name + '\n**Email:** ' + email + '\n**Phone:** ' + phone + '\n**Service:** ' + (service ? service.title : 'Unknown') + '\n**Seller:** ' + (service ? service.sellerName : 'Unknown') + '\n\n**Message:**\n' + message;
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', ISSUES_API_URL, true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
-            xhr.onload = function() { alert(xhr.status === 201 ? '✅ Sent!' : '⚠️ Failed.'); closeContactModalFn(); };
-            xhr.onerror = function() { alert('⚠️ Network error.'); closeContactModalFn(); };
-            xhr.send(JSON.stringify({ title: '📩 Inquiry from ' + name, body: issueBody, labels: ['inquiry'] }));
+            var whatsappText = 'Hi TrustedPros,%0A%0A' +
+                'I am interested in: ' + (service ? service.title : 'Unknown') + '%0A' +
+                'Seller: ' + (service ? service.sellerName : 'Unknown') + '%0A%0A' +
+                'My details:%0A' +
+                'Name: ' + encodeURIComponent(name) + '%0A' +
+                'Email: ' + encodeURIComponent(email) + '%0A' +
+                'Phone: ' + encodeURIComponent(phone) + '%0A%0A' +
+                'Message: ' + encodeURIComponent(message);
+            window.open('https://wa.me/samellr?text=' + whatsappText, '_blank');
+            closeContactModalFn();
         });
 
         document.getElementById('hamburgerBtn').addEventListener('click', function() {
@@ -872,4 +873,4 @@
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
-                            </html>
+                    </html>
