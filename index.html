@@ -438,6 +438,16 @@
             border-top: 1px solid var(--border-light);
             padding-top: 16px;
         }
+        .modal-warning {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
 
         .form-group { margin-bottom: 24px; }
         .form-group label {
@@ -660,26 +670,23 @@
         <div class="modal-box">
             <button class="modal-close" id="closeContactModal">&times;</button>
             <h2>Request contact</h2>
-            <p class="modal-sub">Fill in your details. We'll connect you with the professional.</p>
+            <p class="modal-sub">Fill in your details. You'll be redirected to WhatsApp to complete your request.</p>
+            <div class="modal-warning">⚠️ Please do not share personal contact details in the message. The admin will connect you safely.</div>
             <form id="contactForm" novalidate>
                 <div class="form-group">
                     <label for="contactName">Full name *</label>
                     <input type="text" id="contactName" placeholder="e.g. Jane Mokoena" required minlength="3">
                 </div>
                 <div class="form-group">
-                    <label for="contactEmail">Email address *</label>
-                    <input type="email" id="contactEmail" placeholder="jane@example.com" required>
-                </div>
-                <div class="form-group">
                     <label for="contactPhone">Phone number *</label>
                     <input type="tel" id="contactPhone" placeholder="082 123 4567" required>
                 </div>
                 <div class="form-group">
-                    <label for="contactMessage">Your message *</label>
-                    <textarea id="contactMessage" rows="4" placeholder="Describe what you need..." required minlength="10"></textarea>
+                    <label for="contactMessage">Your message (optional)</label>
+                    <textarea id="contactMessage" rows="3" placeholder="Briefly describe what you need..."></textarea>
                 </div>
                 <input type="hidden" id="contactServiceId" value="">
-                <button type="submit" class="btn-primary btn-block">Send via WhatsApp</button>
+                <button type="submit" class="btn-primary btn-block">Continue to WhatsApp</button>
             </form>
             <p class="modal-footnote">🔒 Your info is sent directly to the admin via WhatsApp. Sellers never see your contact details.</p>
         </div>
@@ -745,15 +752,12 @@
             if (cleaned.slice(0,3) === '+27' && cleaned.length === 12 && /^\+\d+$/.test(cleaned)) return true;
             return false;
         }
-        function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
         function containsLetter(str) { return /[a-zA-Z]/.test(str); }
 
         function validateContactForm(data) {
             var errors = [];
             if (!data.name || !containsLetter(data.name.trim())) errors.push('Name must contain letters.');
-            if (!data.email || !isValidEmail(data.email)) errors.push('Enter a valid email address.');
             if (!data.phone || !isValidPhone(data.phone)) errors.push('Enter a valid SA phone number.');
-            if (!data.message || data.message.trim().length < 10) errors.push('Message must be at least 10 characters.');
             return errors;
         }
 
@@ -840,10 +844,9 @@
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             var name = document.getElementById('contactName').value.trim();
-            var email = document.getElementById('contactEmail').value.trim();
             var phone = document.getElementById('contactPhone').value.trim();
             var message = document.getElementById('contactMessage').value.trim();
-            var errors = validateContactForm({ name: name, email: email, phone: phone, message: message });
+            var errors = validateContactForm({ name: name, phone: phone });
             if (errors.length > 0) { alert('Please fix:\n- ' + errors.join('\n- ')); return; }
             var serviceId = contactServiceId.value;
             var service = allServices.find(function(s) { return s.id === serviceId; });
@@ -852,10 +855,9 @@
                 'Seller: ' + (service ? service.sellerName : 'Unknown') + '%0A%0A' +
                 'My details:%0A' +
                 'Name: ' + encodeURIComponent(name) + '%0A' +
-                'Email: ' + encodeURIComponent(email) + '%0A' +
                 'Phone: ' + encodeURIComponent(phone) + '%0A%0A' +
-                'Message: ' + encodeURIComponent(message);
-            window.open('https://wa.me/samellr?text=' + whatsappText, '_blank');
+                'Message: ' + (message ? encodeURIComponent(message) : 'No message');
+            window.open('https://wa.me/27683063065?text=' + whatsappText, '_blank');
             closeContactModalFn();
         });
 
@@ -873,4 +875,4 @@
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
-                    </html>
+    </html>
