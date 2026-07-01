@@ -142,5 +142,21 @@
     "planPrice": 480,
     "paid": true,
     "expiresAt": null
+  },
+  {
+    "id": "sub-001",
+    "title": "YOUR SERVICE TITLE",
+    "category": "Beauty",
+    "location": "YOUR LOCATION",
+    "description": "YOUR DESCRIPTION – include price like R500",
+    "sellerName": "Beauties HairSal",
+    "sellerPhone": "0821234567",
+    "image": "",
+    "status": "approved",
+    "submittedAt": "2026-07-01",
+    "plan": "1month",
+    "planPrice": 150,
+    "paid": true,
+    "expiresAt": null
   }
 ]
