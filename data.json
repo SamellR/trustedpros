@@ -58,6 +58,6 @@
     "plan": "1month",
     "planPrice": 150,
     "paid": true,
-    "expiresAt": 2026-07-01
+    "expiresAt": "2026-07-01"
 }
 ]
