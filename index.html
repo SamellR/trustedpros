@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrustedPros – Local Services Marketplace</title>
+    <title>TrustedPros – Polokwane's Vetted Local Services Marketplace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
@@ -429,6 +429,68 @@
             color: var(--primary);
         }
 
+        /* INVESTORS SECTION */
+        .investors-section {
+            padding: 64px 0;
+            background: var(--primary);
+            color: #fff;
+        }
+        .investors-section h2 { color: #fff; }
+        .investors-section .gold { color: var(--accent); }
+        .investors-card {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .investors-card p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+        .investors-list {
+            display: inline-block;
+            text-align: left;
+            margin: 16px 0 24px;
+        }
+        .investors-list li {
+            margin-bottom: 8px;
+            font-size: 1rem;
+            padding-left: 20px;
+            position: relative;
+        }
+        .investors-list li::before {
+            content: "•";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+        }
+
+        /* DISCLAIMER SECTION */
+        .legal-section {
+            padding: 48px 0;
+            background: var(--bg);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        .legal-section h3 {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+            margin-top: 24px;
+        }
+        .legal-section h3:first-child { margin-top: 0; }
+        .legal-section p { margin-bottom: 8px; }
+        .legal-divider {
+            border: none;
+            border-top: 1px solid var(--border-light);
+            margin: 24px 0;
+        }
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -532,7 +594,7 @@
             background: var(--primary);
             color: rgba(255, 255, 255, 0.8);
             padding-top: 48px;
-            margin-top: 32px;
+            margin-top: 0;
         }
         .footer-inner {
             display: grid;
@@ -684,7 +746,7 @@
                         <span class="pricing-price">R480</span>
                     </div>
                 </div>
-                <p style="text-align:center;margin-top:16px;color:var(--text-muted);font-size:0.9rem;">All listings are reviewed before going live. Payment via WhatsApp.</p>
+                <p style="text-align:center;margin-top:16px;color:var(--text-muted);font-size:0.9rem;">All listings are vetted before going live. Payment via WhatsApp.</p>
                 <div class="pricing-cta">
                     <a href="https://wa.me/27683063065?text=Hi%20TrustedPros%2C%20I%20want%20to%20list%20my%20service.%0A%0APricing%3A%201mo%20R150%20%7C%202mo%20R280%20%7C%203mo%20R390%20%7C%204mo%20R480%0A%0AMy%20service%3A%0AName%3A%0ACategory%3A%0ALocation%3A%0ADescription%20%26%20price%3A%0A%0AMy%20contact%3A%0AName%3A%0APhone%3A%0A%0AI%20will%20send%20up%20to%202%20photos%20(1%20will%20be%20chosen)." class="btn-primary" target="_blank">List your service on WhatsApp</a>
                 </div>
@@ -703,8 +765,8 @@
                     </div>
                     <div class="step">
                         <div class="step-number">2</div>
-                        <h3>Admin approves</h3>
-                        <p>We manually review every listing to ensure quality &amp; relevance.</p>
+                        <h3>Admin vets</h3>
+                        <p>We manually vet every listing to ensure quality &amp; relevance.</p>
                     </div>
                     <div class="step">
                         <div class="step-number">3</div>
@@ -732,6 +794,43 @@
                 <div class="services-grid" id="servicesGrid">
                     <div class="empty-state"><p>Loading services…</p></div>
                 </div>
+            </div>
+        </section>
+
+        <!-- INVESTORS & MENTORS -->
+        <section class="investors-section" id="investors">
+            <div class="container">
+                <div class="investors-card">
+                    <h2>Partner <span class="gold">with us</span></h2>
+                    <p>TrustedPros is Polokwane's first vetted local services marketplace. We connect middle-class homeowners, business owners, and elderly residents with trusted professionals – safely, quickly, and personally.</p>
+                    <p>We're looking for:</p>
+                    <ul class="investors-list">
+                        <li><strong>Investors</strong> to help us scale across Limpopo</li>
+                        <li><strong>Mentors</strong> with experience in marketplaces, payments, or local business</li>
+                    </ul>
+                    <a href="https://wa.me/27683063065?text=Hi%20TrustedPros%2C%20I%20am%20interested%20in%20partnering%20with%20you." class="btn-primary" target="_blank">📩 Contact us on WhatsApp</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEGAL -->
+        <section class="legal-section" id="legal">
+            <div class="container">
+                <h3>Disclaimer</h3>
+                <p>TrustedPros connects customers with independent service providers. We vet listings but are not liable for the quality of work, disputes, or any damages arising from services rendered. Use at your own discretion.</p>
+
+                <hr class="legal-divider">
+
+                <h3>Terms of Service</h3>
+                <p>By using TrustedPros, you agree to communicate respectfully and use the platform for lawful purposes only. We reserve the right to remove any listing or block any user at our sole discretion.</p>
+                <p><strong>For entrepreneurs:</strong> By listing your service, you agree that your business name, service details, and provided photo will be publicly displayed on TrustedPros. You are responsible for the accuracy of your listing. Listing fees are non-refundable once your service goes live.</p>
+                <p><strong>For customers:</strong> TrustedPros facilitates introductions only. We do not guarantee availability, pricing, or outcomes. Always confirm details directly with the service provider.</p>
+
+                <hr class="legal-divider">
+
+                <h3>Privacy Policy</h3>
+                <p>We collect only the information you provide via WhatsApp (name, phone number, and message). This information is used solely to connect you with the relevant service provider or to process your listing. We do not share your personal contact details publicly on this site. We do not use cookies, analytics, or tracking tools.</p>
+                <p>For any privacy concerns, contact us directly via WhatsApp.</p>
             </div>
         </section>
 
@@ -947,4 +1046,4 @@
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
-</html>
+                        </html>
