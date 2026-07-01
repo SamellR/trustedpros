@@ -40,7 +40,7 @@
 <body>
     <div class="container">
         <h1>📊 Admin Dashboard</h1>
-        <p class="sub">Read‑only view of live listings and inquiries. Approve/reject via GitHub.</p>
+        <p class="sub">Read‑only view of live listings. Manage via GitHub.</p>
 
         <div class="stats" id="statsContainer"></div>
 
@@ -73,10 +73,8 @@
 
         function renderStats() {
             var approved = allServices.filter(function(s) { return s.status === 'approved' && s.paid === true; }).length;
-            var pending = allServices.filter(function(s) { return s.status === 'pending'; }).length;
             document.getElementById('statsContainer').innerHTML =
-                '<div class="stat"><span>' + approved + '</span> Live</div>' +
-                '<div class="stat"><span>' + pending + '</span> In data.json (pending)</div>';
+                '<div class="stat"><span>' + approved + '</span> Live Listings</div>';
         }
 
         function renderListings() {
@@ -91,7 +89,7 @@
                     (service.image ? '<img src="' + service.image + '" style="max-width:120px;max-height:80px;border-radius:6px;object-fit:cover;margin-bottom:8px;" onerror="this.style.display=\'none\'">' : '') +
                     '<strong>' + service.title + '</strong>' +
                     '<div class="meta">' + service.category + ' • ' + service.location + '</div>' +
-                    '<div class="meta">Seller: ' + service.sellerName + ' (' + (service.sellerPhone || 'no phone') + ')</div>' +
+                    '<div class="meta">Seller: ' + service.sellerName + '</div>' +
                     '<div class="meta">Plan: ' + (service.plan || 'N/A') + ' – R' + (service.planPrice || 0) + ' | ' + (service.paid ? '✅ Paid' : '❌ Unpaid') + '</div>' +
                     '<span class="badge badge-approved">Live</span>' +
                     '<div style="font-size:0.8rem;color:#94a3b8;margin-top:4px;">' + desc + '</div>' +
@@ -102,27 +100,7 @@
 
         function renderInquiries() {
             var container = document.getElementById('tabInquiries');
-            container.innerHTML = '<div class="empty">Loading inquiries…</div>';
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', ISSUES_URL, true);
-            xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    var issues = JSON.parse(xhr.responseText);
-                    if (issues.length === 0) { container.innerHTML = '<div class="empty">No inquiries.</div>'; return; }
-                    var html = '';
-                    issues.forEach(function(issue) {
-                        html += '<div class="inquiry-item">' +
-                            '<div class="q">#' + issue.number + ' – ' + issue.title + '</div>' +
-                            '<div class="detail" style="white-space:pre-wrap;">' + (issue.body || '') + '</div>' +
-                            '<div style="font-size:0.75rem;color:#94a3b8;">' + new Date(issue.created_at).toLocaleString() + '</div>' +
-                            '</div>';
-                    });
-                    container.innerHTML = html;
-                } else { container.innerHTML = '<div class="empty">Could not load inquiries.</div>'; }
-            };
-            xhr.onerror = function() { container.innerHTML = '<div class="empty">Network error.</div>'; };
-            xhr.send();
+            container.innerHTML = '<div class="empty">Inquiries now come via WhatsApp. Check your phone.</div>';
         }
 
         function renderAll() { renderStats(); renderListings(); }
@@ -135,7 +113,6 @@
             btn.classList.add('active');
             document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
             document.getElementById(tabId === 'listings' ? 'tabListings' : 'tabInquiries').classList.add('active');
-            if (tabId === 'inquiries') renderInquiries();
         });
 
         loadServices(function() { renderAll(); });
