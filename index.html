@@ -411,7 +411,6 @@
             max-height: 90vh;
             overflow-y: auto;
         }
-        .modal-wide { max-width: 720px; }
         .modal-close {
             position: sticky;
             top: 0;
@@ -476,43 +475,6 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
-        }
-
-        .plan-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 4px;
-        }
-        .plan-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 14px 8px;
-            border: 2px solid var(--border-light);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: center;
-            background: var(--bg);
-        }
-        .plan-card:hover { border-color: var(--accent); }
-        .plan-card input[type="radio"] { display: none; }
-        .plan-card.selected {
-            border-color: var(--accent);
-            background: rgba(212, 163, 115, 0.08);
-        }
-        .plan-duration {
-            display: block;
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--text-dark);
-        }
-        .plan-price {
-            display: block;
-            font-weight: 700;
-            color: var(--accent);
-            font-size: 1.1rem;
         }
 
         .site-footer {
@@ -598,8 +560,6 @@
             .modal-box { padding: 24px; margin: 16px; }
             .hero { padding: 32px 0 48px; }
             .hero-image img { height: 200px; }
-            .plan-selector { grid-template-columns: 1fr 1fr; gap: 8px; }
-            .plan-card { padding: 10px 4px; }
         }
         @media (max-width: 400px) {
             .logo-tagline { display: none; }
@@ -621,7 +581,7 @@
                 <ul>
                     <li><a href="#listings">Browse</a></li>
                     <li><a href="#how-it-works">How it works</a></li>
-                    <li><a href="#" class="btn-outline" id="openPostBtn">List your service</a></li>
+                    <li><a href="https://wa.me/27683063065?text=Hi%20TrustedPros%2C%20I%20want%20to%20list%20my%20service." class="btn-outline" target="_blank">List your service</a></li>
                 </ul>
             </nav>
             <button class="hamburger" aria-label="Menu" id="hamburgerBtn">
@@ -725,91 +685,6 @@
         </div>
     </div>
 
-    <!-- POST SERVICE MODAL -->
-    <div class="modal-overlay" id="postModal">
-        <div class="modal-box modal-wide">
-            <button class="modal-close" id="closePostModal">&times;</button>
-            <h2>List your service</h2>
-            <p class="modal-sub">Fill in the details below. Our admin will review and approve within 24 hours.</p>
-            <form id="postForm" novalidate>
-                <div class="form-group">
-                    <label for="postTitle">Service title *</label>
-                    <input type="text" id="postTitle" placeholder="e.g. Bathroom tiling specialist" required minlength="5">
-                </div>
-                <div class="form-grid-2">
-                    <div class="form-group">
-                        <label for="postCategory">Category *</label>
-                        <select id="postCategory" required>
-                            <option value="">-- Select --</option>
-                            <option value="Home & Garden">Home & Garden</option>
-                            <option value="Beauty">Beauty</option>
-                            <option value="Logistics">Logistics</option>
-                            <option value="Cleaning">Cleaning</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="postLocation">Location / Area *</label>
-                        <input type="text" id="postLocation" placeholder="e.g. Polokwane CBD" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="postSeller">Your name / business name *</label>
-                    <input type="text" id="postSeller" placeholder="e.g. Thabo's Tiling" required>
-                </div>
-                <div class="form-group">
-                    <label for="postPhone">Your phone (for admin contact) *</label>
-                    <input type="tel" id="postPhone" placeholder="082 123 4567" required>
-                </div>
-                <div class="form-group">
-                    <label for="postImage">Image URL (optional)</label>
-                    <input type="url" id="postImage" placeholder="https://example.com/photo.jpg">
-                </div>
-                <!-- FILE PICKER -->
-                <div class="form-group">
-                    <label for="postImages">Or upload from device (max 2)</label>
-                    <input type="file" id="postImages" accept="image/*" multiple style="padding:8px;">
-                    <small style="color:var(--text-muted);">Photos will be compressed. You can also paste a URL above.</small>
-                    <div id="imagePreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
-                </div>
-                <div class="form-group">
-                    <label for="postDescription">Full description (include your price) *</label>
-                    <textarea id="postDescription" rows="5" placeholder="Describe your service, experience, and include your price (e.g. '... – R1200 per job')" required minlength="20"></textarea>
-                </div>
-
-                <!-- PLAN SELECTOR -->
-                <div class="form-group">
-                    <label>Choose your listing plan *</label>
-                    <div class="plan-selector" id="planSelector">
-                        <label class="plan-card">
-                            <input type="radio" name="plan" value="1month" required>
-                            <span class="plan-duration">1 month</span>
-                            <span class="plan-price">R150</span>
-                        </label>
-                        <label class="plan-card">
-                            <input type="radio" name="plan" value="2months">
-                            <span class="plan-duration">2 months</span>
-                            <span class="plan-price">R280</span>
-                        </label>
-                        <label class="plan-card">
-                            <input type="radio" name="plan" value="3months">
-                            <span class="plan-duration">3 months</span>
-                            <span class="plan-price">R390</span>
-                        </label>
-                        <label class="plan-card">
-                            <input type="radio" name="plan" value="4months">
-                            <span class="plan-duration">4 months</span>
-                            <span class="plan-price">R480</span>
-                        </label>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-primary btn-block">Submit for approval</button>
-            </form>
-            <p class="modal-footnote">✅ All submissions are manually reviewed. You'll be notified once approved.</p>
-        </div>
-    </div>
-
     <!-- FOOTER -->
     <footer class="site-footer">
         <div class="container footer-inner">
@@ -821,7 +696,7 @@
                 <h4>Quick links</h4>
                 <ul>
                     <li><a href="#listings">Browse</a></li>
-                    <li><a href="#" id="footerPostLink">List your service</a></li>
+                    <li><a href="https://wa.me/27683063065?text=Hi%20TrustedPros%2C%20I%20want%20to%20list%20my%20service." target="_blank">List your service</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -861,14 +736,9 @@
         var servicesGrid = document.getElementById('servicesGrid');
         var categoryPillsContainer = document.getElementById('categoryPills');
         var contactModal = document.getElementById('contactModal');
-        var postModal = document.getElementById('postModal');
         var closeContactBtn = document.getElementById('closeContactModal');
-        var closePostBtn = document.getElementById('closePostModal');
-        var openPostBtns = document.querySelectorAll('#openPostBtn, #footerPostLink');
         var contactForm = document.getElementById('contactForm');
-        var postForm = document.getElementById('postForm');
         var contactServiceId = document.getElementById('contactServiceId');
-        var selectedImages = [];
 
         function isValidPhone(phone) {
             var cleaned = phone.replace(/[\s\-\(\)\+]/g, '');
@@ -878,21 +748,7 @@
         }
         function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
         function containsLetter(str) { return /[a-zA-Z]/.test(str); }
-        function containsPrice(str) { return /R\s?\d/.test(str); }
 
-        function validateServiceForm(data) {
-            var errors = [];
-            if (!data.title || data.title.trim().length < 5) errors.push('Title must be at least 5 characters.');
-            var categories = ['Home & Garden','Beauty','Logistics','Cleaning','Other'];
-            if (!data.category || categories.indexOf(data.category) === -1) errors.push('Select a valid category.');
-            if (!data.location || data.location.trim().length < 3) errors.push('Location is required.');
-            if (!data.description || data.description.trim().length < 20) errors.push('Description must be at least 20 characters.');
-            if (data.description && !containsPrice(data.description)) errors.push('Include your price in the description (e.g. "... – R500").');
-            if (!data.sellerName || !containsLetter(data.sellerName.trim())) errors.push('Name must contain letters.');
-            if (!data.sellerPhone || !isValidPhone(data.sellerPhone)) errors.push('Enter a valid SA phone number.');
-            if (data.image && !/^https?:\/\/.+/i.test(data.image.trim())) errors.push('Image URL must start with http.');
-            return errors;
-        }
         function validateContactForm(data) {
             var errors = [];
             if (!data.name || !containsLetter(data.name.trim())) errors.push('Name must contain letters.');
@@ -978,70 +834,9 @@
             document.body.style.overflow = '';
             contactForm.reset();
         }
-        function openPostModal() {
-            postModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            setTimeout(function() {
-                var radios = document.querySelectorAll('.plan-card input[type="radio"]');
-                for (var i = 0; i < radios.length; i++) {
-                    radios[i].addEventListener('change', function() {
-                        var cards = document.querySelectorAll('.plan-card');
-                        for (var j = 0; j < cards.length; j++) cards[j].classList.remove('selected');
-                        this.parentNode.classList.add('selected');
-                    });
-                }
-            }, 100);
-        }
-        function closePostModalFn() {
-            postModal.classList.remove('active');
-            document.body.style.overflow = '';
-            postForm.reset();
-            selectedImages = [];
-            document.getElementById('imagePreview').innerHTML = '';
-            var cards = document.querySelectorAll('.plan-card');
-            for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
-        }
 
         closeContactBtn.addEventListener('click', closeContactModalFn);
-        closePostBtn.addEventListener('click', closePostModalFn);
         contactModal.addEventListener('click', function(e) { if (e.target === contactModal) closeContactModalFn(); });
-        postModal.addEventListener('click', function(e) { if (e.target === postModal) closePostModalFn(); });
-        for (var b = 0; b < openPostBtns.length; b++) {
-            openPostBtns[b].addEventListener('click', function(e) { e.preventDefault(); openPostModal(); });
-        }
-
-        // File picker
-        document.getElementById('postImages').addEventListener('change', function(e) {
-            var files = e.target.files;
-            if (files.length > 2) { alert('Max 2 images.'); this.value = ''; return; }
-            selectedImages = [];
-            document.getElementById('imagePreview').innerHTML = '';
-            for (var i = 0; i < files.length; i++) {
-                (function(file) {
-                    var reader = new FileReader();
-                    reader.onload = function(ev) {
-                        var img = new Image();
-                        img.onload = function() {
-                            var canvas = document.createElement('canvas');
-                            var maxW = 400;
-                            var scale = maxW / img.width;
-                            canvas.width = maxW;
-                            canvas.height = img.height * scale;
-                            var ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                            var compressed = canvas.toDataURL('image/jpeg', 0.6);
-                            selectedImages.push(compressed);
-                            var preview = document.createElement('img');
-                            preview.src = compressed;
-                            preview.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:6px;';
-                            document.getElementById('imagePreview').appendChild(preview);
-                        };
-                        img.src = ev.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                })(files[i]);
-            }
-        });
 
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1063,40 +858,6 @@
             xhr.send(JSON.stringify({ title: '📩 Inquiry from ' + name, body: issueBody, labels: ['inquiry'] }));
         });
 
-        postForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            var title = document.getElementById('postTitle').value.trim();
-            var category = document.getElementById('postCategory').value;
-            var location = document.getElementById('postLocation').value.trim();
-            var sellerName = document.getElementById('postSeller').value.trim();
-            var sellerPhone = document.getElementById('postPhone').value.trim();
-            var imageUrl = document.getElementById('postImage').value.trim();
-            var description = document.getElementById('postDescription').value.trim();
-            var selectedPlan = document.querySelector('input[name="plan"]:checked');
-            if (!selectedPlan) { alert('Select a plan.'); return; }
-            var planValue = selectedPlan.value;
-            var planPrices = { '1month': 150, '2months': 280, '3months': 390, '4months': 480 };
-            var errors = validateServiceForm({ title: title, category: category, location: location, description: description, sellerName: sellerName, sellerPhone: sellerPhone, image: imageUrl, plan: planValue });
-            if (errors.length > 0) { alert('Please fix:\n- ' + errors.join('\n- ')); return; }
-            var newService = {
-                id: 'sub-' + Date.now().toString(36),
-                title: title, category: category, location: location, description: description,
-                sellerName: sellerName, sellerPhone: sellerPhone,
-                image: imageUrl || (selectedImages.length > 0 ? selectedImages[0] : ''),
-                images: selectedImages,
-                status: 'pending', submittedAt: new Date().toISOString(),
-                plan: planValue, planPrice: planPrices[planValue], paid: false, expiresAt: null
-            };
-            var issueBody = '**New Listing Submission**\n\n```json\n' + JSON.stringify(newService, null, 2) + '\n```\n\n**To approve:** Copy JSON above, add to `data.json`, set `status` to `"approved"`, `paid` to `true`.';
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', ISSUES_API_URL, true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
-            xhr.onload = function() { alert(xhr.status === 201 ? '✅ Submitted!' : '⚠️ Failed.'); closePostModalFn(); };
-            xhr.onerror = function() { alert('⚠️ Network error.'); closePostModalFn(); };
-            xhr.send(JSON.stringify({ title: '📝 New Listing: ' + title, body: issueBody, labels: ['submission', 'pending'] }));
-        });
-
         document.getElementById('hamburgerBtn').addEventListener('click', function() {
             document.querySelector('.main-nav').classList.toggle('open');
         });
@@ -1111,4 +872,4 @@
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
-                    </html>
+                            </html>
