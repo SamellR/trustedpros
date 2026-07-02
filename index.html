@@ -971,7 +971,7 @@
             }
             var html = '';
             filtered.forEach(function(service) {
-                var desc = service.description.length > 90 ? service.description.substring(0, 90) + '…' : service.description;
+                var desc = service.description.length > 120 ? service.description.substring(0, 120) + '…' : service.description;
                 html += '<div class="service-card" data-id="' + service.id + '">' +
                     '<div class="card-image"><img src="' + (service.image || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400') + '" alt="' + service.title + '" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400\'">' +
                     '<span class="card-category">' + service.category + '</span></div>' +
@@ -1064,4 +1064,4 @@
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
-                        </html>
+    </html>
